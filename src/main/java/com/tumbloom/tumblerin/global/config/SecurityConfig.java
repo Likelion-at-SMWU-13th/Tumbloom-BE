@@ -39,7 +39,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // ✅ 이 Bean을 등록해줘야 위에서 사용할 수 있어요
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter(jwtTokenProvider);
