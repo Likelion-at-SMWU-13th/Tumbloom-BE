@@ -5,8 +5,4 @@ spring:
     active: dev  # 기본적으로 dev 프로파일을 활성화
 
 server:
-  port: ${PORT:8080}  # 기본 포트를 설정
-
-logging:
-  level:
-    com.zaxxer.hikari: DEBUG
+  port: ${PORT:8080}
