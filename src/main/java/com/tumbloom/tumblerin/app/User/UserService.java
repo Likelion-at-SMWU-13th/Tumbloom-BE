@@ -2,8 +2,10 @@ package com.tumbloom.tumblerin.app.User;
 
 import com.tumbloom.tumblerin.app.User.dto.SignupRequestDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -15,8 +17,7 @@ public class UserService {
     public void signup(SignupRequestDTO request) {
         // 이메일 중복 검사
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
-        }
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 존재하는 이메일입니다.");        }
 
         User user = User.builder()
                 .nickname(request.getNickname())

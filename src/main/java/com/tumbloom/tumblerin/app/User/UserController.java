@@ -3,6 +3,7 @@ package com.tumbloom.tumblerin.app.User;
 import com.tumbloom.tumblerin.app.User.dto.SignupRequestDTO;
 import com.tumbloom.tumblerin.global.dto.ApiResponseTemplate;
 import com.tumbloom.tumblerin.global.dto.SuccessCode;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -20,7 +21,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody SignupRequestDTO requestDto) {
+    public ResponseEntity<?> signup(@Valid @RequestBody SignupRequestDTO requestDto) {
         userService.signup(requestDto);
         return ApiResponseTemplate.success(SuccessCode.USER_CREATED, "회원가입이 완료되었습니다.");
     }

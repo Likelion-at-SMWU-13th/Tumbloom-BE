@@ -4,12 +4,16 @@ import com.tumbloom.tumblerin.global.dto.ApiResponseTemplate;
 import com.tumbloom.tumblerin.global.dto.ErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.server.ResponseStatusException;
 
 @ControllerAdvice
@@ -32,14 +36,13 @@ public class GlobalExceptionHandler {
         return ApiResponseTemplate.error(ErrorCode.INVALID_REQUEST, "잘못된 인자 값입니다: " + e.getMessage());
     }
 
-    // 404 Resource Not Found 처리
+    // 여러 에러 응담 코드 처리
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<ApiResponseTemplate<String>> handleResponseStatusException(ResponseStatusException e) {
         HttpStatus status = (HttpStatus) e.getStatusCode();  // ResponseStatusException에서 HttpStatus 추출
         // 상태 코드에 맞는 ErrorCode를 매핑
         ErrorCode errorCode = mapHttpStatusToErrorCode(status);
 
-        // 적절한 ErrorCode와 메시지로 ApiResponseTemplate 반환
         return ApiResponseTemplate.error(errorCode, e.getReason());
     }
 
@@ -55,6 +58,38 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponseTemplate<String>> handleGeneralException(Exception e) {
         logger.error("예상치 못한 서버 오류 발생", e);
         return ApiResponseTemplate.error(ErrorCode.INTERNAL_SERVER_ERROR, "예상치 못한 서버 오류가 발생했습니다: " + e.getMessage());
+    }
+
+    //valid 검증 실패
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiResponseTemplate<String>> handleValidationException(MethodArgumentNotValidException e) {
+        logger.error("유효성 검사 실패", e);
+        String errorMessage = e.getBindingResult().getFieldErrors().stream()
+                .findFirst()
+                .map(fe -> fe.getField() + ": " + fe.getDefaultMessage())
+                .orElse("유효성 검사 실패");
+        return ApiResponseTemplate.error(ErrorCode.INVALID_REQUEST, errorMessage);
+    }
+
+    // 400 Bad Request - 타입 불일치 (예: @PathVariable Long id에 abc가 들어온 경우)
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ApiResponseTemplate<String>> handleTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        logger.error("요청 파라미터 타입 불일치", e);
+        String message = String.format("파라미터 '%s'의 값 '%s'는(은) 올바른 형식이 아닙니다.", e.getName(), e.getValue());
+        return ApiResponseTemplate.error(ErrorCode.INVALID_REQUEST, message);
+    }
+
+    // 데이터 무결성 위반 시
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiResponseTemplate<String>> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+        logger.error("데이터 무결성 위반", e);
+        return ApiResponseTemplate.error(ErrorCode.ALREADY_EXIST_SUBJECT_EXCEPTION, "데이터 무결성 위반: " + e.getRootCause().getMessage());
+    }
+
+    @ExceptionHandler(DataAccessException.class)
+    public ResponseEntity<ApiResponseTemplate<String>> handleDataAccessException(DataAccessException e) {
+        logger.error("데이터베이스 오류 발생", e);
+        return ApiResponseTemplate.error(ErrorCode.INTERNAL_SERVER_ERROR, "서버 내부 데이터 처리 오류가 발생했습니다.");
     }
 
     // HttpStatus에 맞는 ErrorCode 매핑

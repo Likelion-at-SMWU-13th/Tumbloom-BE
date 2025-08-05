@@ -21,7 +21,7 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**","/api/users/signup").permitAll()  // Swagger 관련 URL은 모두 허용
                         .anyRequest().authenticated()  // 나머지 요청은 인증 필요
                 )
-                .formLogin(form -> form.disable());  // 기본 로그인 폼 제공
+                .formLogin(form -> form.disable());
 
         return http.build();
     }
