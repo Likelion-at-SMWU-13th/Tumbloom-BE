@@ -1,5 +1,7 @@
 package com.tumbloom.tumblerin.global.config;
 
+import com.tumbloom.tumblerin.global.security.JwtAuthenticationFilter;
+import com.tumbloom.tumblerin.global.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,8 +11,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -18,18 +20,29 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())  // CSRF 비활성화
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**","/api/users/signup","/api/users/login").permitAll()  // Swagger 관련 URL은 모두 허용
-                        .anyRequest().authenticated()  // 나머지 요청은 인증 필요
+                        .requestMatchers(
+                                "/swagger-ui/**", "/v3/api-docs/**",
+                                "/api/users/signup", "/api/users/login"
+                        ).permitAll()
+                        .anyRequest().authenticated()
                 )
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .formLogin(form -> form.disable());
 
         return http.build();
+    }
+
+    // ✅ 이 Bean을 등록해줘야 위에서 사용할 수 있어요
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter(jwtTokenProvider);
     }
 
     @Bean
@@ -41,6 +54,4 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager() throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-
-
 }

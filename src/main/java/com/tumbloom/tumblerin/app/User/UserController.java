@@ -29,4 +29,9 @@ public class UserController {
         LoginResponseDTO response= userService.login(request);
         return ApiResponseTemplate.success(SuccessCode.LOGIN_SUCCESSFUL, response);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout() {
+        return ApiResponseTemplate.success(SuccessCode.LOGOUT_SUCCESSFUL, null);
+    }
 }

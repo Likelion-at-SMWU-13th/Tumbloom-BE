@@ -7,13 +7,11 @@ import com.tumbloom.tumblerin.global.dto.ErrorCode;
 import com.tumbloom.tumblerin.global.exception.BusinessException;
 import com.tumbloom.tumblerin.global.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -50,5 +48,7 @@ public class UserService {
 
         return new LoginResponseDTO(token);
     }
+
+
 
 }
