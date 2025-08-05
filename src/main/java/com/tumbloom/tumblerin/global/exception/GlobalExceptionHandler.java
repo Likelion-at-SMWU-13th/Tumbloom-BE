@@ -92,6 +92,12 @@ public class GlobalExceptionHandler {
         return ApiResponseTemplate.error(ErrorCode.INTERNAL_SERVER_ERROR, "서버 내부 데이터 처리 오류가 발생했습니다.");
     }
 
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ApiResponseTemplate<String>> handleBusinessException(BusinessException e) {
+        logger.warn("비즈니스 예외 발생: {}", e.getMessage());
+        return ApiResponseTemplate.error(e.getErrorCode(), e.getMessage());
+    }
+
     // HttpStatus에 맞는 ErrorCode 매핑
     private ErrorCode mapHttpStatusToErrorCode(HttpStatus status) {
         switch (status) {
