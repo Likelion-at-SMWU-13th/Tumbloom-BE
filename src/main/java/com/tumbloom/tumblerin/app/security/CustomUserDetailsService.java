@@ -1,5 +1,7 @@
-package com.tumbloom.tumblerin.app.User;
+package com.tumbloom.tumblerin.app.security;
 
+import com.tumbloom.tumblerin.app.domain.User;
+import com.tumbloom.tumblerin.app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

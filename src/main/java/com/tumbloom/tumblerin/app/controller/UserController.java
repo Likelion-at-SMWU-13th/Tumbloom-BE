@@ -1,6 +1,9 @@
-package com.tumbloom.tumblerin.app.User;
+package com.tumbloom.tumblerin.app.controller;
 
-import com.tumbloom.tumblerin.app.User.dto.*;
+import com.tumbloom.tumblerin.app.service.UserService;
+import com.tumbloom.tumblerin.app.dto.Authdto.LoginRequestDTO;
+import com.tumbloom.tumblerin.app.dto.Authdto.LoginResponseDTO;
+import com.tumbloom.tumblerin.app.dto.Authdto.SignupRequestDTO;
 import com.tumbloom.tumblerin.global.dto.ApiResponseTemplate;
 import com.tumbloom.tumblerin.global.dto.SuccessCode;
 import jakarta.validation.Valid;

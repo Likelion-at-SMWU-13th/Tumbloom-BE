@@ -1,4 +1,4 @@
-package com.tumbloom.tumblerin.app.User.dto;
+package com.tumbloom.tumblerin.app.dto.Authdto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

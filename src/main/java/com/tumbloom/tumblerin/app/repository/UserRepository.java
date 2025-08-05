@@ -1,5 +1,6 @@
-package com.tumbloom.tumblerin.app.User;
+package com.tumbloom.tumblerin.app.repository;
 
+import com.tumbloom.tumblerin.app.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

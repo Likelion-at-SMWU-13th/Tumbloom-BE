@@ -1,8 +1,11 @@
-package com.tumbloom.tumblerin.app.User;
+package com.tumbloom.tumblerin.app.service;
 
-import com.tumbloom.tumblerin.app.User.dto.LoginRequestDTO;
-import com.tumbloom.tumblerin.app.User.dto.LoginResponseDTO;
-import com.tumbloom.tumblerin.app.User.dto.SignupRequestDTO;
+import com.tumbloom.tumblerin.app.repository.UserRepository;
+import com.tumbloom.tumblerin.app.domain.RoleType;
+import com.tumbloom.tumblerin.app.domain.User;
+import com.tumbloom.tumblerin.app.dto.Authdto.LoginRequestDTO;
+import com.tumbloom.tumblerin.app.dto.Authdto.LoginResponseDTO;
+import com.tumbloom.tumblerin.app.dto.Authdto.SignupRequestDTO;
 import com.tumbloom.tumblerin.global.dto.ErrorCode;
 import com.tumbloom.tumblerin.global.exception.BusinessException;
 import com.tumbloom.tumblerin.global.security.JwtTokenProvider;

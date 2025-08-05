@@ -1,6 +1,6 @@
 package com.tumbloom.tumblerin.global.security;
 
-import com.tumbloom.tumblerin.app.User.CustomUserDetailsService;
+import com.tumbloom.tumblerin.app.security.CustomUserDetailsService;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

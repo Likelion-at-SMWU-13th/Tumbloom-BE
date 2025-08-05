@@ -1,4 +1,4 @@
-package com.tumbloom.tumblerin.app.User.dto;
+package com.tumbloom.tumblerin.app.dto.Authdto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

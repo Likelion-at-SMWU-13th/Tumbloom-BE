@@ -1,5 +1,6 @@
-package com.tumbloom.tumblerin.app.User;
+package com.tumbloom.tumblerin.app.security;
 
+import com.tumbloom.tumblerin.app.domain.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

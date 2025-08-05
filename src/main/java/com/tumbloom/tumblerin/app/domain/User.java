@@ -1,4 +1,4 @@
-package com.tumbloom.tumblerin.app.User;
+package com.tumbloom.tumblerin.app.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
