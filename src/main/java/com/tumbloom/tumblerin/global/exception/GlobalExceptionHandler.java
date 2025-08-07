@@ -101,7 +101,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ApiResponseTemplate<String>> handleBusinessException(BusinessException e) {
         logger.warn("비즈니스 예외 발생: {}", e.getMessage());
-        return ApiResponseTemplate.error(e.getErrorCode(), e.getMessage());
+        return ApiResponseTemplate.error(e.getErrorCode(), e.getDetail() != null ? e.getDetail() : null);
     }
 
     // HttpStatus에 맞는 ErrorCode 매핑
