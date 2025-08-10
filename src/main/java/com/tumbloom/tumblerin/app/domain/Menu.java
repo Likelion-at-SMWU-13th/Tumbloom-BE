@@ -1,7 +1,6 @@
 package com.tumbloom.tumblerin.app.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 @Entity
