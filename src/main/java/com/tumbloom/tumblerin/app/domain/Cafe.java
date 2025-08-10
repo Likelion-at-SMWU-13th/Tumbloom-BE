@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.locationtech.jts.geom.Point;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -35,5 +38,8 @@ public class Cafe {
     private String verificationCode;
 
     private String callNumber;
+
+    @OneToMany(mappedBy = "cafe", cascade = CascadeType.ALL)
+    List<Menu> menuList =  new ArrayList<>();
 
 }
