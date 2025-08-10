@@ -35,4 +35,5 @@ public class Cafe {
     private String verificationCode;
 
     private String callNumber;
+
 }
