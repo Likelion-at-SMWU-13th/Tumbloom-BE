@@ -9,7 +9,6 @@ import org.locationtech.jts.geom.Point;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(of = "id")
 public class Cafe {
 
     @Id
