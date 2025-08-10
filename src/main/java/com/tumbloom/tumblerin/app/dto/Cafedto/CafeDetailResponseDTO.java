@@ -11,8 +11,8 @@ public class CafeDetailResponseDTO {
 
     private Long id;
     private String cafeName;
-    private String address;
     private String imageUrl;
+    private String address;
     private String businessHours;
     private String callNumber;
     private List<MenuDTO> menuList;
