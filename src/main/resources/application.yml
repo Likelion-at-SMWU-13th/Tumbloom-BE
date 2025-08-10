@@ -3,8 +3,6 @@ spring:
     name: tumblerin
   profiles:
     active: dev  # 기본적으로 dev 프로파일을 활성화
-  jpa:
-    database-platform: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect # 위도 경도 계산을 위해 추가
 
 server:
   port: ${PORT:8080}

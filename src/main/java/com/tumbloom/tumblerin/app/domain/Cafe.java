@@ -6,7 +6,7 @@ import org.locationtech.jts.geom.Point;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "id")
@@ -26,7 +26,7 @@ public class Cafe {
 
     private String businessHours;
 
-    @Column(columnDefinition = "GEOMETRY", nullable=false) // 위경도
+    @Column(columnDefinition = "POINT SRID 4326", nullable=false) // 위경도
     private Point location;
 
     @Column(nullable = false, unique = true)
