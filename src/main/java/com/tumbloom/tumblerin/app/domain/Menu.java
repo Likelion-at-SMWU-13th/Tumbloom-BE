@@ -21,4 +21,5 @@ public class Menu {
     private String menuName;
 
     private Integer price;
+
 }
