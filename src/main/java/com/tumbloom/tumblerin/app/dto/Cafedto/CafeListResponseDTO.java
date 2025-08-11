@@ -15,5 +15,6 @@ public class CafeListResponseDTO {
     private String businessHours;
     private double latitude;
     private double longitude;
+    private boolean isFavorite;
 
 }
