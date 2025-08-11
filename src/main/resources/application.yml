@@ -1,6 +1,11 @@
 spring:
   application:
     name: tumblerin
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}   # 환경변수에서 API 키 읽기
+      embedding:
+        model: text-embedding-3-small  # 추후 성능 개선 필요시 large로 개선
   profiles:
     active: dev  # 기본적으로 dev 프로파일을 활성화
 
