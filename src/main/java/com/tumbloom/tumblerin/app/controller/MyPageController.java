@@ -8,25 +8,28 @@ import com.tumbloom.tumblerin.global.dto.SuccessCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/mypage")
+@RequestMapping("/api/users/me")
 @RequiredArgsConstructor
 public class MyPageController {
 
     private final UserPreferenceService userPreferenceService;
 
-    @PostMapping("/preference")
+    @PostMapping("/preferences")
     public ResponseEntity<?> savePreference(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @RequestBody UserPreferenceDTO dto) {
 
         userPreferenceService.saveOrUpdate(userDetails.getUser().getId(),dto);
         return ApiResponseTemplate.success(SuccessCode.RESOURCE_UPDATED,null);
+    }
+
+    @GetMapping("/preferences")
+    public ResponseEntity<?> getPreference(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        UserPreferenceDTO preferenceDTO = userPreferenceService.getPreference(userDetails.getUser().getId());
+        return ApiResponseTemplate.success(SuccessCode.RESOURCE_RETRIEVED, preferenceDTO);
     }
 
 }

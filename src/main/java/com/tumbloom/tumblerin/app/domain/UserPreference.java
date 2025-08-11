@@ -23,15 +23,15 @@ public class UserPreference {
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private List<VisitPurpose> visitPurposes;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private List<PreferredMenu> preferredMenus;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private List<ExtraOption> extraOptions;
 }

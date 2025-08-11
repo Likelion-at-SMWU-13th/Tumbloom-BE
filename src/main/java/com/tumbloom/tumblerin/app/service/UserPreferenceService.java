@@ -13,6 +13,7 @@ import com.tumbloom.tumblerin.global.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,6 +44,33 @@ public class UserPreferenceService {
 
     }
 
+    //사용자 취향 조회
+    public UserPreferenceDTO getPreference(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+
+        UserPreference preference = userPreferenceRepository.findByUser(user).orElse(null);
+
+        if (preference == null) {
+            // 아직 등록된 취향이 없으면 빈 리스트로 반환
+            return UserPreferenceDTO.builder()
+                    .visitPurposes(Collections.emptyList())
+                    .preferredMenus(Collections.emptyList())
+                    .extraOptions(Collections.emptyList())
+                    .build();
+        }
+
+        return UserPreferenceDTO.builder()
+                .visitPurposes(convertEnumToStringList(preference.getVisitPurposes()))
+                .preferredMenus(convertEnumToStringList(preference.getPreferredMenus()))
+                .extraOptions(convertEnumToStringList(preference.getExtraOptions()))
+                .build();
+    }
+
+
+
+
+
     //string을 enum 값으로 변환
     private List<VisitPurpose> convertToVisitPurposeEnum(List<String> list) {
         return list.stream()
@@ -65,7 +93,7 @@ public class UserPreferenceService {
     //enum 값을 string으로 변환
     private <T extends Enum<T>> List<String> convertEnumToStringList(List<T> enumList) {
         return enumList.stream()
-                .map(Enum::name)  // Enum 이름 (예: "EMOTIONAL_ATMOSPHERE")을 String으로 변환
+                .map(Enum::name)
                 .collect(Collectors.toList());
     }
 
