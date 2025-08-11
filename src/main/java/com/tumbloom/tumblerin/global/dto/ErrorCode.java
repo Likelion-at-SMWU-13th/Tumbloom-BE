@@ -16,7 +16,9 @@ public enum ErrorCode {
     ACCESS_DENIED_EXCEPTION(HttpStatus.FORBIDDEN, "해당 리소스에 대한 접근 권한이 없습니다."),
     ALREADY_EXIST_SUBJECT_EXCEPTION(HttpStatus.CONFLICT, "이미 존재하는 리소스입니다."),
     SERVICE_UNAVAILABLE(HttpStatus.SERVICE_UNAVAILABLE, "서버가 일시적으로 사용 불가 상태입니다."),
-    UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 서버 에러가 발생했습니다.");
+    UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 서버 에러가 발생했습니다."),
+
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 사용자를 찾지 못했습니다. 토큰이 유효한지 확인해주세요.");
 
 
     private final HttpStatus httpStatus;
