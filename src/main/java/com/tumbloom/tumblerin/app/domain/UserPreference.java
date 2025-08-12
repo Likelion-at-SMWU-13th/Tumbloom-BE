@@ -7,8 +7,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
+import java.util.Set;
 
 @Table(name = "user_preference")
 @Entity
@@ -23,15 +22,15 @@ public class UserPreference {
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
-    private List<VisitPurpose> visitPurposes;
+    private Set<VisitPurpose> visitPurposes;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
-    private List<PreferredMenu> preferredMenus;
+    private Set<PreferredMenu> preferredMenus;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
-    private List<ExtraOption> extraOptions;
+    private Set<ExtraOption> extraOptions;
 }

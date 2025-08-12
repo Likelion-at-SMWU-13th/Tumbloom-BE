@@ -13,8 +13,7 @@ import com.tumbloom.tumblerin.global.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,9 +34,9 @@ public class UserPreferenceService {
                     return up;
                 });
 
-        preference.setVisitPurposes(convertToVisitPurposeEnum(dto.getVisitPurposes()));
-        preference.setPreferredMenus(convertToPreferredMenuEnum(dto.getPreferredMenus()));
-        preference.setExtraOptions(convertToExtraOptionEnum(dto.getExtraOptions()));
+        preference.setVisitPurposes(convertToVisitPurposeEnum(new HashSet<>(dto.getVisitPurposes())));
+        preference.setPreferredMenus(convertToPreferredMenuEnum(new HashSet<>(dto.getPreferredMenus())));
+        preference.setExtraOptions(convertToExtraOptionEnum(new HashSet<>(dto.getExtraOptions())));
 
         userPreferenceRepository.save(preference);
 
@@ -49,7 +48,7 @@ public class UserPreferenceService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
-        UserPreference preference = userPreferenceRepository.findByUser(user).orElse(null);
+        UserPreference preference = userPreferenceRepository.findDetailByUserId(userId).orElse(null);
 
         if (preference == null) {
             // 아직 등록된 취향이 없으면 빈 리스트로 반환
@@ -72,27 +71,27 @@ public class UserPreferenceService {
 
 
     //string을 enum 값으로 변환
-    private List<VisitPurpose> convertToVisitPurposeEnum(List<String> list) {
+    private Set<VisitPurpose> convertToVisitPurposeEnum(Set<String> list) {
         return list.stream()
                 .map(VisitPurpose::valueOf)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
-    private List<PreferredMenu> convertToPreferredMenuEnum(List<String> list) {
+    private Set<PreferredMenu> convertToPreferredMenuEnum(Set<String> list) {
         return list.stream()
                 .map(PreferredMenu::valueOf)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
-    private List<ExtraOption> convertToExtraOptionEnum(List<String> list) {
+    private Set<ExtraOption> convertToExtraOptionEnum(Set<String> list) {
         return list.stream()
                 .map(ExtraOption::valueOf)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     //enum 값을 string으로 변환
-    private <T extends Enum<T>> List<String> convertEnumToStringList(List<T> enumList) {
-        return enumList.stream()
+    private <T extends Enum<T>> List<String> convertEnumToStringList(Collection<T> enumCollection) {
+        return enumCollection.stream()
                 .map(Enum::name)
                 .collect(Collectors.toList());
     }
