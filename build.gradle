@@ -50,6 +50,8 @@ dependencies {
 
 	//open ai 연결
 	implementation 'org.springframework.ai:spring-ai-starter-model-openai'
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
+
 
 }
 
