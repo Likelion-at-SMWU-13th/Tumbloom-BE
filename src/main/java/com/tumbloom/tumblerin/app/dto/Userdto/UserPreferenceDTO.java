@@ -1,4 +1,4 @@
-package com.tumbloom.tumblerin.app.dto;
+package com.tumbloom.tumblerin.app.dto.Userdto;
 
 import lombok.*;
 

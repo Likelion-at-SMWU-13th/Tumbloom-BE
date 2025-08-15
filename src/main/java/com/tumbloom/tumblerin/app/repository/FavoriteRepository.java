@@ -19,4 +19,6 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
     @Query("SELECT f.cafe.id FROM Favorite f WHERE f.user.id = :userId")
     List<Long> findCafeIdsByUserId(Long userId);
 
+    int countByUserId(Long userId);
+
 }

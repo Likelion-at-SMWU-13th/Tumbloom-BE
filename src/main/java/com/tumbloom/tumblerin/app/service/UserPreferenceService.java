@@ -5,7 +5,7 @@ import com.tumbloom.tumblerin.app.domain.Preference.PreferredMenu;
 import com.tumbloom.tumblerin.app.domain.Preference.VisitPurpose;
 import com.tumbloom.tumblerin.app.domain.User;
 import com.tumbloom.tumblerin.app.domain.UserPreference;
-import com.tumbloom.tumblerin.app.dto.UserPreferenceDTO;
+import com.tumbloom.tumblerin.app.dto.Userdto.UserPreferenceDTO;
 import com.tumbloom.tumblerin.app.repository.UserPreferenceRepository;
 import com.tumbloom.tumblerin.app.repository.UserRepository;
 import com.tumbloom.tumblerin.global.dto.ErrorCode;
