@@ -1,6 +1,6 @@
 package com.tumbloom.tumblerin.app.controller;
 import com.tumbloom.tumblerin.app.dto.Cafedto.CafeRecommendDTO;
-import com.tumbloom.tumblerin.app.dto.UserPreferenceDTO;
+import com.tumbloom.tumblerin.app.dto.Userdto.UserPreferenceDTO;
 import com.tumbloom.tumblerin.app.dto.Userdto.UserMyPageResponseDTO;
 import com.tumbloom.tumblerin.app.security.CustomUserDetails;
 import com.tumbloom.tumblerin.app.service.CafeRecommendationService;
