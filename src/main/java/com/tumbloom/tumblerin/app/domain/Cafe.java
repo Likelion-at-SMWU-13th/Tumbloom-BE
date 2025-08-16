@@ -39,6 +39,7 @@ public class Cafe {
 
     private String callNumber;
 
+    @Builder.Default
     @OneToMany(mappedBy = "cafe", cascade = CascadeType.ALL)
     List<Menu> menuList =  new ArrayList<>();
 
@@ -47,5 +48,11 @@ public class Cafe {
 
     @Column(length = 1000)
     private String description; // 카페 설명
+
+    // 연관관계 편의 메서드
+    public void addMenu(Menu menu) {
+        menuList.add(menu);
+        menu.setCafe(this);
+    }
 
 }

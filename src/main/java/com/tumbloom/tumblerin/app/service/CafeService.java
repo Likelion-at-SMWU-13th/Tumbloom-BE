@@ -61,6 +61,16 @@ public class CafeService {
                 .embedding(embeddingJson)
                 .build();
 
+        if (request.getMenuList() != null && !request.getMenuList().isEmpty()) {
+            for (CafeCreateRequestDTO.MenuCreateRequestDTO m : request.getMenuList()) {
+                Menu menu = Menu.builder()
+                        .menuName(m.getMenuName())
+                        .price(m.getPrice())
+                        .build();
+                cafe.addMenu(menu);
+            }
+        }
+
         return cafeRepository.save(cafe);
     }
 
@@ -92,6 +102,16 @@ public class CafeService {
                     .description(request.getDescription())
                     .embedding(embeddingJson)
                     .build();
+
+            if (request.getMenuList() != null && !request.getMenuList().isEmpty()) {
+                for (CafeCreateRequestDTO.MenuCreateRequestDTO m : request.getMenuList()) {
+                    Menu menu = Menu.builder()
+                            .menuName(m.getMenuName())
+                            .price(m.getPrice())
+                            .build();
+                    cafe.addMenu(menu);
+                }
+            }
 
             cafeList.add(cafe);
         }
