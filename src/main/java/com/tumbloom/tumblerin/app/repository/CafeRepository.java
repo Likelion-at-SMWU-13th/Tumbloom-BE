@@ -39,17 +39,19 @@ public interface CafeRepository extends JpaRepository<Cafe, Long> {
     List<Cafe> findNearbyCafeList(@Param("lon") double lon, @Param("lat") double lat, @Param("radiusMeters") double radiusMeters);
 
     // top5
-    @Query("""
-        SELECT c
-        FROM Cafe c
-        WHERE function('ST_Distance_Sphere',
-                       c.location,
-                       function('ST_GeomFromText', CONCAT('POINT(', :lon, ' ', :lat, ')'), 4326)) <= :radiusMeters
-        ORDER BY function('ST_Distance_Sphere',
-                          c.location,
-                          function('ST_GeomFromText', CONCAT('POINT(', :lon, ' ', :lat, ')'), 4326)) ASC,
-                  c.id ASC
-        """)
-    List<Cafe> findTopByDistance(@Param("lon") double lon, @Param("lat") double lat, @Param("radiusMeters") double radiusMeters, Pageable pageable);
+    @Query(value = """
+    SELECT c.*
+    FROM cafe c
+    WHERE ST_Distance_Sphere(
+            c.location,
+            ST_SRID(POINT(:lon, :lat), 4326)
+          ) <= :radiusMeters
+    ORDER BY ST_Distance_Sphere(
+            c.location,
+            ST_SRID(POINT(:lon, :lat), 4326)
+          )
+    LIMIT 5
+    """, nativeQuery = true)
+    List<Cafe> findNearbyTop5CafeList(@Param("lon") double lon, @Param("lat") double lat, @Param("radiusMeters") double radiusMeters);
 
 }

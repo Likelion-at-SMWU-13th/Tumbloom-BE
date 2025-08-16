@@ -48,4 +48,10 @@ public class CafeController {
         return ApiResponseTemplate.success(SuccessCode.RESOURCE_RETRIEVED, nearbyCafeList);
     }
 
+    @GetMapping("/nearby/top")
+    public ResponseEntity<?> getNearbyTop5CafeList(@RequestParam("lat") double latitude, @RequestParam("lng") double longitude, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long userId = userDetails.getUser().getId();
+        List<CafeListResponseDTO> nearbyTop5CafeList = cafeService.getNearbyTop5CafeList(longitude, latitude, userId);
+        return ApiResponseTemplate.success(SuccessCode.RESOURCE_RETRIEVED, nearbyTop5CafeList);
+    }
 }
