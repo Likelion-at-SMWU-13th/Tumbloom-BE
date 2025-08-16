@@ -1,5 +1,6 @@
 package com.tumbloom.tumblerin.app.controller;
 import com.tumbloom.tumblerin.app.dto.Cafedto.CafeRecommendDTO;
+import com.tumbloom.tumblerin.app.dto.Userdto.UserHomeInfoDTO;
 import com.tumbloom.tumblerin.app.dto.Userdto.UserPreferenceDTO;
 import com.tumbloom.tumblerin.app.dto.Userdto.UserMyPageResponseDTO;
 import com.tumbloom.tumblerin.app.security.CustomUserDetails;
@@ -75,5 +76,11 @@ public class MyPageController {
             return ApiResponseTemplate.success(SuccessCode.RESOURCE_RETRIEVED, null);
         }
         return ApiResponseTemplate.success(SuccessCode.RESOURCE_RETRIEVED, recommendations);
+    }
+
+    @GetMapping("/home")
+    public ResponseEntity<?> getStamps(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        UserHomeInfoDTO homeInfo = myPageService.getUserHomeInfo(userDetails.getUser().getId());
+        return ApiResponseTemplate.success(SuccessCode.RESOURCE_RETRIEVED, homeInfo);
     }
 }
