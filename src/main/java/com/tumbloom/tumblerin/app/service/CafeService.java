@@ -5,6 +5,7 @@ import com.tumbloom.tumblerin.app.domain.Menu;
 import com.tumbloom.tumblerin.app.dto.Cafedto.CafeBatchCreateRequestDTO;
 import com.tumbloom.tumblerin.app.dto.Cafedto.CafeCreateRequestDTO;
 import com.tumbloom.tumblerin.app.dto.Cafedto.CafeDetailResponseDTO;
+import com.tumbloom.tumblerin.app.dto.Cafedto.CafeListResponseDTO;
 import com.tumbloom.tumblerin.app.repository.CafeRepository;
 import com.tumbloom.tumblerin.app.repository.FavoriteRepository;
 import com.tumbloom.tumblerin.app.repository.MenuRepository;
@@ -18,9 +19,7 @@ import org.locationtech.jts.geom.PrecisionModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Service
@@ -32,6 +31,8 @@ public class CafeService {
     private final MenuRepository menuRepository;
     private final OpenAIEmbeddingService embeddingService;
     private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
+
+    private static final double RADIUS_METERS = 3000.0;
 
     //카페 정보 하나씩 등록하는 ver.
     public Cafe createCafe(CafeCreateRequestDTO request) {
@@ -126,6 +127,28 @@ public class CafeService {
                 menuDTOList,
                 isFavorite
         );
+    }
+
+    // 3km 이내 카페 리스트 불러오기
+    @Transactional(readOnly = true)
+    public List<CafeListResponseDTO> getNearbyCafeList(double longitude, double latitude, Long userId) {
+
+        List<Cafe> nearbyCafeList = cafeRepository.findNearbyCafeList(longitude, latitude, RADIUS_METERS);
+        List<Long> favoriteCafeList = favoriteRepository.findCafeIdsByUserId(userId);
+        Set<Long> favoriteCafeSet = new HashSet<>(favoriteCafeList);
+
+        return nearbyCafeList.stream()
+                .map(cafe -> new CafeListResponseDTO(
+                        cafe.getId(),
+                        cafe.getCafeName(),
+                        cafe.getImageUrl(),
+                        cafe.getAddress(),
+                        cafe.getBusinessHours(),
+                        cafe.getLocation().getY(),
+                        cafe.getLocation().getX(),
+                        favoriteCafeSet.contains(cafe.getId())
+                ))
+                .toList();
     }
 
 }
