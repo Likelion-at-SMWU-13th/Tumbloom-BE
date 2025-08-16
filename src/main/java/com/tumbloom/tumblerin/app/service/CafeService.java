@@ -154,6 +154,19 @@ public class CafeService {
     public List<CafeListResponseDTO> getNearbyCafeList(double longitude, double latitude, Long userId) {
 
         List<Cafe> nearbyCafeList = cafeRepository.findNearbyCafeList(longitude, latitude, RADIUS_METERS);
+        return getCafeListResponseDTOS(userId, nearbyCafeList);
+
+    }
+
+    @Transactional(readOnly = true)
+    public List<CafeListResponseDTO> getNearbyTop5CafeList(double longitude, double latitude, Long userId) {
+
+        List<Cafe> nearbyTop5CafeList = cafeRepository.findNearbyTop5CafeList(longitude, latitude, RADIUS_METERS);
+        return getCafeListResponseDTOS(userId, nearbyTop5CafeList);
+
+    }
+
+    private List<CafeListResponseDTO> getCafeListResponseDTOS(Long userId, List<Cafe> nearbyCafeList) {
         List<Long> favoriteCafeList = favoriteRepository.findCafeIdsByUserId(userId);
         Set<Long> favoriteCafeSet = new HashSet<>(favoriteCafeList);
 
@@ -169,27 +182,7 @@ public class CafeService {
                         favoriteCafeSet.contains(cafe.getId())
                 ))
                 .toList();
-    }
 
-    @Transactional(readOnly = true)
-    public List<CafeListResponseDTO> getNearbyTop5CafeList(double longitude, double latitude, Long userId) {
-
-        List<Cafe> nearbyTop5CafeList = cafeRepository.findNearbyTop5CafeList(longitude, latitude, RADIUS_METERS);
-        List<Long> favoriteCafeList = favoriteRepository.findCafeIdsByUserId(userId);
-        Set<Long> favoriteCafeSet = new HashSet<>(favoriteCafeList);
-
-        return nearbyTop5CafeList.stream()
-                .map(cafe -> new CafeListResponseDTO(
-                        cafe.getId(),
-                        cafe.getCafeName(),
-                        cafe.getImageUrl(),
-                        cafe.getAddress(),
-                        cafe.getBusinessHours(),
-                        cafe.getLocation().getY(),
-                        cafe.getLocation().getX(),
-                        favoriteCafeSet.contains(cafe.getId())
-                ))
-                .toList();
     }
 
 }
