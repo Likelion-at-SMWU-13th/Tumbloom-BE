@@ -79,4 +79,11 @@ public class CafeController {
         return ApiResponseTemplate.success(SuccessCode.RESOURCE_RETRIEVED, filteredByCoupon);
     }
 
+    @GetMapping("/filtered/popular")
+    public ResponseEntity<?> getFilteredByPopular(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long userId = userDetails.getUser().getId();
+        List<CafeListResponseDTO> filteredByPopular = cafeService.getFilteredByPopular(userId);
+        return ApiResponseTemplate.success(SuccessCode.RESOURCE_RETRIEVED, filteredByPopular);
+    }
+
 }
