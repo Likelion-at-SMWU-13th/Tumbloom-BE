@@ -28,7 +28,7 @@ public interface CafeRepository extends JpaRepository<Cafe, Long> {
         SELECT c FROM Cafe c
         WHERE function('ST_Distance_Sphere',
                         c.location,
-                        function('ST_SRID', function('POINT', :lon, :lat), 4326)) <= :radiusMeters
+                        function('ST_GeomFromText', CONCAT('POINT(', :lon, ' ', :lat, ')'), 4326)) <= :radiusMeters
         ORDER BY c.id ASC
         """)
     List<Cafe> findNearbyCafeList(@Param("lon") double lon, @Param("lat") double lat, @Param("radiusMeters") double radiusMeters);
@@ -39,10 +39,10 @@ public interface CafeRepository extends JpaRepository<Cafe, Long> {
         FROM Cafe c
         WHERE function('ST_Distance_Sphere',
                        c.location,
-                       function('ST_SRID', function('POINT', :lon, :lat), 4326)) <= :radiusMeters
+                       function('ST_GeomFromText', CONCAT('POINT(', :lon, ' ', :lat, ')'), 4326)) <= :radiusMeters
         ORDER BY function('ST_Distance_Sphere',
                           c.location,
-                          function('ST_SRID', function('POINT', :lon, :lat), 4326)) ASC,
+                          function('ST_GeomFromText', CONCAT('POINT(', :lon, ' ', :lat, ')'), 4326)) ASC,
                   c.id ASC
         """)
     List<Cafe> findTopByDistance(@Param("lon") double lon, @Param("lat") double lat, @Param("radiusMeters") double radiusMeters, Pageable pageable);
