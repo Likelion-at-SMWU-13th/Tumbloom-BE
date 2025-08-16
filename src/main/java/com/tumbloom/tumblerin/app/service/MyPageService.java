@@ -1,6 +1,9 @@
 package com.tumbloom.tumblerin.app.service;
 
+import com.tumbloom.tumblerin.app.domain.Cafe;
+import com.tumbloom.tumblerin.app.domain.Favorite;
 import com.tumbloom.tumblerin.app.domain.User;
+import com.tumbloom.tumblerin.app.dto.Userdto.UserFavoriteCafeDTO;
 import com.tumbloom.tumblerin.app.dto.Userdto.UserHomeInfoDTO;
 import com.tumbloom.tumblerin.app.dto.Userdto.UserMyPageResponseDTO;
 import com.tumbloom.tumblerin.app.repository.CouponRepository;
@@ -12,6 +15,9 @@ import com.tumbloom.tumblerin.global.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -101,6 +107,27 @@ public class MyPageService {
         homeInfoDTO.setStampStatus(stampStatus);
 
         return homeInfoDTO;
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserFavoriteCafeDTO> getFavoriteCafes(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, null));
+
+        List<Favorite> favorites = favoriteRepository.findByUserIdOrderByCreatedAtDesc(userId);
+
+        return favorites.stream()
+                .map(fav -> {
+                    Cafe cafe = fav.getCafe();
+                    return UserFavoriteCafeDTO.builder()
+                            .id(cafe.getId())
+                            .cafeName(cafe.getCafeName())
+                            .imageUrl(cafe.getImageUrl())
+                            .address(cafe.getAddress())
+                            .businessHours(cafe.getBusinessHours())
+                            .build();
+                })
+                .collect(Collectors.toList());
     }
 
     public static String getLevelName(int stampCount) {
