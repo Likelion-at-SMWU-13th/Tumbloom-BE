@@ -154,31 +154,36 @@ public class CafeService {
     public List<CafeListResponseDTO> getNearbyCafeList(double longitude, double latitude, Long userId) {
 
         List<Cafe> nearbyCafeList = cafeRepository.findNearbyCafeList(longitude, latitude, RADIUS_METERS);
-        List<Long> favoriteCafeList = favoriteRepository.findCafeIdsByUserId(userId);
-        Set<Long> favoriteCafeSet = new HashSet<>(favoriteCafeList);
+        return getCafeListResponseDTOS(userId, nearbyCafeList);
 
-        return nearbyCafeList.stream()
-                .map(cafe -> new CafeListResponseDTO(
-                        cafe.getId(),
-                        cafe.getCafeName(),
-                        cafe.getImageUrl(),
-                        cafe.getAddress(),
-                        cafe.getBusinessHours(),
-                        cafe.getLocation().getY(),
-                        cafe.getLocation().getX(),
-                        favoriteCafeSet.contains(cafe.getId())
-                ))
-                .toList();
     }
 
+    // 3km 이내 top5 카페 불러오기
     @Transactional(readOnly = true)
     public List<CafeListResponseDTO> getNearbyTop5CafeList(double longitude, double latitude, Long userId) {
 
         List<Cafe> nearbyTop5CafeList = cafeRepository.findNearbyTop5CafeList(longitude, latitude, RADIUS_METERS);
+        return getCafeListResponseDTOS(userId, nearbyTop5CafeList);
+
+    }
+
+    @Transactional(readOnly = true)
+    public List<CafeListResponseDTO> searchByKeyword(String keyword, Long userId) {
+
+        keyword = (keyword == null) ? "" : keyword.trim().replaceAll("\\s+", " ");
+
+        if (keyword.isEmpty()) return List.of();
+
+        List<Cafe> searchResultList = cafeRepository.searchByCafeNameOrAddress(keyword);
+        return getCafeListResponseDTOS(userId, searchResultList);
+    }
+
+    // 카페 리스트 DTO 구성 함수
+    private List<CafeListResponseDTO> getCafeListResponseDTOS(Long userId, List<Cafe> cafeList) {
         List<Long> favoriteCafeList = favoriteRepository.findCafeIdsByUserId(userId);
         Set<Long> favoriteCafeSet = new HashSet<>(favoriteCafeList);
 
-        return nearbyTop5CafeList.stream()
+        return cafeList.stream()
                 .map(cafe -> new CafeListResponseDTO(
                         cafe.getId(),
                         cafe.getCafeName(),
@@ -190,6 +195,7 @@ public class CafeService {
                         favoriteCafeSet.contains(cafe.getId())
                 ))
                 .toList();
+
     }
 
 }
