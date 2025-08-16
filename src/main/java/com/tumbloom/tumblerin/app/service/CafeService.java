@@ -8,6 +8,8 @@ import com.tumbloom.tumblerin.app.dto.Cafedto.CafeDetailResponseDTO;
 import com.tumbloom.tumblerin.app.repository.CafeRepository;
 import com.tumbloom.tumblerin.app.repository.FavoriteRepository;
 import com.tumbloom.tumblerin.app.repository.MenuRepository;
+import com.tumbloom.tumblerin.global.dto.ErrorCode;
+import com.tumbloom.tumblerin.global.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -101,7 +103,7 @@ public class CafeService {
     public CafeDetailResponseDTO getCafeDetail(Long cafeId, Long userId) {
 
         Cafe cafe = cafeRepository.findById(cafeId)
-                .orElseThrow(() -> new IllegalArgumentException("카페를 찾을 수 없습니다. id=" + cafeId));
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "카페를 찾을 수 없습니다. id=" + cafeId));
 
         boolean isFavorite = (userId != null) && favoriteRepository.existsByUserIdAndCafeId(userId, cafeId);
 
