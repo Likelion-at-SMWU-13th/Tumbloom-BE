@@ -158,6 +158,7 @@ public class CafeService {
 
     }
 
+    // 3km 이내 top5 카페 불러오기
     @Transactional(readOnly = true)
     public List<CafeListResponseDTO> getNearbyTop5CafeList(double longitude, double latitude, Long userId) {
 
@@ -166,11 +167,21 @@ public class CafeService {
 
     }
 
-    private List<CafeListResponseDTO> getCafeListResponseDTOS(Long userId, List<Cafe> nearbyCafeList) {
+    @Transactional(readOnly = true)
+    public List<CafeListResponseDTO> searchByKeyword(String keyword, Long userId) {
+
+        keyword = (keyword == null) ? "" : keyword.trim().replaceAll("\\s+", " ");
+
+        List<Cafe> searchResultList = cafeRepository.searchByCafeNameOrAddress(keyword);
+        return getCafeListResponseDTOS(userId, searchResultList);
+    }
+
+    // 카페 리스트 DTO 구성 함수
+    private List<CafeListResponseDTO> getCafeListResponseDTOS(Long userId, List<Cafe> cafeList) {
         List<Long> favoriteCafeList = favoriteRepository.findCafeIdsByUserId(userId);
         Set<Long> favoriteCafeSet = new HashSet<>(favoriteCafeList);
 
-        return nearbyCafeList.stream()
+        return cafeList.stream()
                 .map(cafe -> new CafeListResponseDTO(
                         cafe.getId(),
                         cafe.getCafeName(),
