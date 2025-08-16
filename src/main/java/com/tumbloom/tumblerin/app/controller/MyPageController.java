@@ -27,7 +27,7 @@ public class MyPageController {
     private final CafeRecommendationService cafeRecommendationService;
     private final MyPageService myPageService;
 
-    @GetMapping("")
+    @GetMapping("/mypage")
     public ResponseEntity<?> getUserInfo(@AuthenticationPrincipal CustomUserDetails userDetails){
         UserMyPageResponseDTO userinfo = myPageService.getUserInfo(userDetails.getUser().getId());
         UserPreferenceDTO preference = userPreferenceService.getPreference(userDetails.getUser().getId());
