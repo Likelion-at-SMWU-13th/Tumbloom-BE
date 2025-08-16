@@ -42,4 +42,10 @@ public class Cafe {
     @OneToMany(mappedBy = "cafe", cascade = CascadeType.ALL)
     List<Menu> menuList =  new ArrayList<>();
 
+    @Column(columnDefinition = "JSON")
+    private String embedding;
+
+    @Column(length = 1000)
+    private String description; // 카페 설명
+
 }

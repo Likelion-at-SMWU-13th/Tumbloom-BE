@@ -27,4 +27,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RoleType roleType;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private UserPreference userPreference;
 }
