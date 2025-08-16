@@ -16,6 +16,7 @@ public class CafeDetailResponseDTO {
     private String businessHours;
     private String callNumber;
     private List<MenuDTO> menuList;
+    private boolean isFavorite;
 
     @Getter
     @AllArgsConstructor
