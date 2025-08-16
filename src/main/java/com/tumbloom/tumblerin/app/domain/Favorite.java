@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"user_id", "cafe_id"})})
 public class Favorite {
 
     @Id
