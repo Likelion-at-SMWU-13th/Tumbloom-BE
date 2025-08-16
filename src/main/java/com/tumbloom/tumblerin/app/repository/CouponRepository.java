@@ -1,5 +1,6 @@
 package com.tumbloom.tumblerin.app.repository;
 
+import com.tumbloom.tumblerin.app.domain.Cafe;
 import com.tumbloom.tumblerin.app.domain.Coupon;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +13,7 @@ public interface CouponRepository extends JpaRepository<Coupon, Long> {
 
     int countByUserIdAndIsUsedFalse(Long userId); // 사용 가능한 쿠폰 수
 
-    @Query("SELECT c.couponManager.cafe.id FROM Coupon c WHERE c.user.id = :userId and c.isUsed = false")
-    List<Long> findCafeIdsByUserId(@Param("userId") Long userId);
+    @Query("SELECT DISTINCT c.couponManager.cafe FROM Coupon c WHERE c.user.id = :userId and c.isUsed = false")
+    List<Cafe> findCafeListByUserId(@Param("userId") Long userId);
 
 }

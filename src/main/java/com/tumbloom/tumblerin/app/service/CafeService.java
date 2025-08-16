@@ -185,10 +185,9 @@ public class CafeService {
     @Transactional(readOnly = true)
     public List<CafeListResponseDTO> getFilteredByCoupon(Long userId) {
 
-        List<Long> couponCafeIds = couponRepository.findCafeIdsByUserId(userId);
-        if (couponCafeIds.isEmpty()) return List.of();
+        List<Cafe> couponCafeList = couponRepository.findCafeListByUserId(userId);
+        if (couponCafeList.isEmpty()) return List.of();
 
-        List<Cafe> couponCafeList = cafeRepository.findAllById(couponCafeIds);
         return getCafeListResponseDTOS(userId, couponCafeList);
 
     }
