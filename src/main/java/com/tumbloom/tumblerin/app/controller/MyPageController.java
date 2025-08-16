@@ -49,7 +49,10 @@ public class MyPageController {
         int min = MyPageService.getMinStampsForLevel(userinfo.getLevel());
         int max = MyPageService.getMaxStampsForLevel(userinfo.getLevel());
         double progress = (double)(userinfo.getTumblerUsageCount() - min) / (max - min);
-        userinfo.setLevelProgress(Math.min(progress, 1.0));  // 최대 1.0으로 제한
+        progress = Math.min(progress, 1.0);// 최대 1.0으로 제한
+        // 소수점 2자리로 반올림
+        progress = Math.round(progress * 100.0) / 100.0;
+        userinfo.setLevelProgress(progress);
 
         return ApiResponseTemplate.success(SuccessCode.RESOURCE_RETRIEVED, userinfo);
     }
