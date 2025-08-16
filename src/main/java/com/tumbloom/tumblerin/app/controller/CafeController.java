@@ -6,6 +6,7 @@ import com.tumbloom.tumblerin.app.dto.Cafedto.CafeCreateRequestDTO;
 import com.tumbloom.tumblerin.app.dto.Cafedto.CafeDetailResponseDTO;
 import com.tumbloom.tumblerin.app.dto.Cafedto.CafeListResponseDTO;
 import com.tumbloom.tumblerin.app.security.CustomUserDetails;
+import com.tumbloom.tumblerin.app.service.CafeRecommendationMappingService;
 import com.tumbloom.tumblerin.app.service.CafeService;
 import com.tumbloom.tumblerin.global.dto.ApiResponseTemplate;
 import com.tumbloom.tumblerin.global.dto.SuccessCode;
@@ -22,6 +23,7 @@ import java.util.List;
 public class CafeController {
 
     private final CafeService cafeService;
+    private final CafeRecommendationMappingService cafeRecommendationMappingService;
 
     @PostMapping
     public  ResponseEntity<?> createCafe(@RequestBody CafeCreateRequestDTO request) {
@@ -62,4 +64,12 @@ public class CafeController {
         List<CafeListResponseDTO> searchResultList = cafeService.searchByKeyword(keyword, userId);
         return ApiResponseTemplate.success(SuccessCode.RESOURCE_RETRIEVED, searchResultList);
     }
+
+    @GetMapping("/recommendations/ai")
+    public ResponseEntity<?> getFilteredByAI(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long userId = userDetails.getUser().getId();
+        List<CafeListResponseDTO> filteredByAI = cafeRecommendationMappingService.getRecommendCafeList(userId);
+        return ApiResponseTemplate.success(SuccessCode.RESOURCE_RETRIEVED, filteredByAI);
+    }
+
 }
