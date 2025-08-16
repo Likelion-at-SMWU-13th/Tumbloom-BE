@@ -1,12 +1,14 @@
 package com.tumbloom.tumblerin.app.service;
 
 import com.tumbloom.tumblerin.app.domain.Cafe;
+import com.tumbloom.tumblerin.app.domain.Coupon;
 import com.tumbloom.tumblerin.app.domain.Menu;
 import com.tumbloom.tumblerin.app.dto.Cafedto.CafeBatchCreateRequestDTO;
 import com.tumbloom.tumblerin.app.dto.Cafedto.CafeCreateRequestDTO;
 import com.tumbloom.tumblerin.app.dto.Cafedto.CafeDetailResponseDTO;
 import com.tumbloom.tumblerin.app.dto.Cafedto.CafeListResponseDTO;
 import com.tumbloom.tumblerin.app.repository.CafeRepository;
+import com.tumbloom.tumblerin.app.repository.CouponRepository;
 import com.tumbloom.tumblerin.app.repository.FavoriteRepository;
 import com.tumbloom.tumblerin.app.repository.MenuRepository;
 import com.tumbloom.tumblerin.global.dto.ErrorCode;
@@ -33,6 +35,7 @@ public class CafeService {
     private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
     private static final double RADIUS_METERS = 3000.0;
+    private final CouponRepository couponRepository;
 
     //카페 정보 하나씩 등록하는 ver.
     public Cafe createCafe(CafeCreateRequestDTO request) {
@@ -176,6 +179,18 @@ public class CafeService {
 
         List<Cafe> searchResultList = cafeRepository.searchByCafeNameOrAddress(keyword);
         return getCafeListResponseDTOS(userId, searchResultList);
+    }
+
+    // 쿠폰 보유 카페 필터링
+    @Transactional(readOnly = true)
+    public List<CafeListResponseDTO> getFilteredByCoupon(Long userId) {
+
+        List<Long> couponCafeIds = couponRepository.findCafeIdsByUserId(userId);
+        if (couponCafeIds.isEmpty()) return List.of();
+
+        List<Cafe> couponCafeList = cafeRepository.findAllById(couponCafeIds);
+        return getCafeListResponseDTOS(userId, couponCafeList);
+
     }
 
     // 카페 리스트 DTO 구성 함수

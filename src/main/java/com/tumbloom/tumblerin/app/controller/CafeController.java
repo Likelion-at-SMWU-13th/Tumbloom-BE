@@ -65,11 +65,18 @@ public class CafeController {
         return ApiResponseTemplate.success(SuccessCode.RESOURCE_RETRIEVED, searchResultList);
     }
 
-    @GetMapping("/recommendations/ai")
+    @GetMapping("/filtered/ai")
     public ResponseEntity<?> getFilteredByAI(@AuthenticationPrincipal CustomUserDetails userDetails) {
         Long userId = userDetails.getUser().getId();
         List<CafeListResponseDTO> filteredByAI = cafeRecommendationMappingService.getRecommendCafeList(userId);
         return ApiResponseTemplate.success(SuccessCode.RESOURCE_RETRIEVED, filteredByAI);
+    }
+
+    @GetMapping("/filtered/coupon")
+    public ResponseEntity<?> getFilteredByCoupon(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long userId = userDetails.getUser().getId();
+        List<CafeListResponseDTO> filteredByCoupon = cafeService.getFilteredByCoupon(userId);
+        return ApiResponseTemplate.success(SuccessCode.RESOURCE_RETRIEVED, filteredByCoupon);
     }
 
 }
