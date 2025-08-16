@@ -1,7 +1,10 @@
 package com.tumbloom.tumblerin.app.dto.Cafedto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,4 +19,12 @@ public class CafeCreateRequestDTO {
     private String verificationCode;
     private String callNumber;
     private String description;
+    private List<MenuCreateRequestDTO> menuList;
+
+    @Getter
+    @Setter
+    public static class MenuCreateRequestDTO {
+        private String menuName;
+        private Integer price;
+    }
 }

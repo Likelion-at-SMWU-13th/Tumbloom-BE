@@ -24,27 +24,34 @@ public interface CafeRepository extends JpaRepository<Cafe, Long> {
     List<Cafe> searchByCafeNameOrAddress(@Param("keyword") String keyword);
 
     // 3km 이내 카페 리스트
-    @Query("""
-        SELECT c FROM Cafe c
-        WHERE function('ST_Distance_Sphere',
-                        c.location,
-                        function('ST_GeomFromText', CONCAT('POINT(', :lon, ' ', :lat, ')'), 4326)) <= :radiusMeters
-        ORDER BY c.id ASC
-        """)
+    @Query(value = """
+    SELECT c.*
+    FROM cafe c
+    WHERE ST_Distance_Sphere(
+            c.location,
+            ST_SRID(POINT(:lon, :lat), 4326)
+          ) <= :radiusMeters
+    ORDER BY ST_Distance_Sphere(
+            c.location,
+            ST_SRID(POINT(:lon, :lat), 4326)
+          )
+    """, nativeQuery = true)
     List<Cafe> findNearbyCafeList(@Param("lon") double lon, @Param("lat") double lat, @Param("radiusMeters") double radiusMeters);
 
     // top5
-    @Query("""
-        SELECT c
-        FROM Cafe c
-        WHERE function('ST_Distance_Sphere',
-                       c.location,
-                       function('ST_GeomFromText', CONCAT('POINT(', :lon, ' ', :lat, ')'), 4326)) <= :radiusMeters
-        ORDER BY function('ST_Distance_Sphere',
-                          c.location,
-                          function('ST_GeomFromText', CONCAT('POINT(', :lon, ' ', :lat, ')'), 4326)) ASC,
-                  c.id ASC
-        """)
-    List<Cafe> findTopByDistance(@Param("lon") double lon, @Param("lat") double lat, @Param("radiusMeters") double radiusMeters, Pageable pageable);
+    @Query(value = """
+    SELECT c.*
+    FROM cafe c
+    WHERE ST_Distance_Sphere(
+            c.location,
+            ST_SRID(POINT(:lon, :lat), 4326)
+          ) <= :radiusMeters
+    ORDER BY ST_Distance_Sphere(
+            c.location,
+            ST_SRID(POINT(:lon, :lat), 4326)
+          )
+    LIMIT 5
+    """, nativeQuery = true)
+    List<Cafe> findNearbyTop5CafeList(@Param("lon") double lon, @Param("lat") double lat, @Param("radiusMeters") double radiusMeters);
 
 }
