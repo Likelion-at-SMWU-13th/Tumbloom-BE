@@ -21,4 +21,6 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
 
     int countByUserId(Long userId);
 
+    List<Favorite> findByUserIdOrderByCreatedAtDesc(Long userId);
+
 }
