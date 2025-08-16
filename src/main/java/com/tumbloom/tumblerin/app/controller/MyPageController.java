@@ -55,7 +55,7 @@ public class MyPageController {
     }
 
 
-    @PostMapping("/preferences")
+    @PutMapping("/preferences")
     public ResponseEntity<?> savePreference(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @RequestBody UserPreferenceDTO dto) {
