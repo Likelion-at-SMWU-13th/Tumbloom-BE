@@ -1,5 +1,6 @@
 package com.tumbloom.tumblerin.app.controller;
 
+import com.tumbloom.tumblerin.app.domain.Cafe;
 import com.tumbloom.tumblerin.app.dto.Cafedto.CafeBatchCreateRequestDTO;
 import com.tumbloom.tumblerin.app.dto.Cafedto.CafeCreateRequestDTO;
 import com.tumbloom.tumblerin.app.dto.Cafedto.CafeDetailResponseDTO;
@@ -53,5 +54,12 @@ public class CafeController {
         Long userId = userDetails.getUser().getId();
         List<CafeListResponseDTO> nearbyTop5CafeList = cafeService.getNearbyTop5CafeList(longitude, latitude, userId);
         return ApiResponseTemplate.success(SuccessCode.RESOURCE_RETRIEVED, nearbyTop5CafeList);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<?> searchByKeyword(@RequestParam("keyword") String keyword, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long userId = userDetails.getUser().getId();
+        List<CafeListResponseDTO> searchResultList = cafeService.searchByKeyword(keyword, userId);
+        return ApiResponseTemplate.success(SuccessCode.RESOURCE_RETRIEVED, searchResultList);
     }
 }

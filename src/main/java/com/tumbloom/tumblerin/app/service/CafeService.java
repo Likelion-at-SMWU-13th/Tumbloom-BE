@@ -172,6 +172,8 @@ public class CafeService {
 
         keyword = (keyword == null) ? "" : keyword.trim().replaceAll("\\s+", " ");
 
+        if (keyword.isEmpty()) return List.of();
+
         List<Cafe> searchResultList = cafeRepository.searchByCafeNameOrAddress(keyword);
         return getCafeListResponseDTOS(userId, searchResultList);
     }
