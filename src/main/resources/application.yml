@@ -6,8 +6,22 @@ spring:
       api-key: ${OPENAI_API_KEY}   # 환경변수에서 API 키 읽기
       embedding:
         model: text-embedding-3-small  # 추후 성능 개선 필요시 large로 개선
-  profiles:
-    active: dev  # 기본적으로 dev 프로파일을 활성화
+  datasource:
+    url: ${DB_JDBC_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: false
+    database: mysql
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: false
+        use_sql_comments: false
+      dialect: org.hibernate.spatial.dialect.mysql.MySQL8SpatialDialect
+    open-in-view: false
 
 server:
   port: ${PORT:8080}
