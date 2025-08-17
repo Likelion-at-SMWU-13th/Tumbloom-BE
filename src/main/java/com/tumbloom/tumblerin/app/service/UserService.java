@@ -1,10 +1,12 @@
 package com.tumbloom.tumblerin.app.service;
 
+import com.tumbloom.tumblerin.app.domain.RefreshToken;
+import com.tumbloom.tumblerin.app.repository.RefreshTokenRepository;
 import com.tumbloom.tumblerin.app.repository.UserRepository;
 import com.tumbloom.tumblerin.app.domain.RoleType;
 import com.tumbloom.tumblerin.app.domain.User;
 import com.tumbloom.tumblerin.app.dto.Authdto.LoginRequestDTO;
-import com.tumbloom.tumblerin.app.dto.Authdto.LoginResponseDTO;
+import com.tumbloom.tumblerin.app.dto.Authdto.TokenResponseDTO;
 import com.tumbloom.tumblerin.app.dto.Authdto.SignupRequestDTO;
 import com.tumbloom.tumblerin.global.dto.ErrorCode;
 import com.tumbloom.tumblerin.global.exception.BusinessException;
@@ -16,6 +18,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -24,6 +28,7 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     public void signup(SignupRequestDTO request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
@@ -40,18 +45,58 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public LoginResponseDTO login(LoginRequestDTO request) {
+    public TokenResponseDTO login(LoginRequestDTO request) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
         String email = authentication.getName();
-        String token = jwtTokenProvider.createToken(email);
+        String accessToken = jwtTokenProvider.createAccessToken(email);
+        String refreshToken = jwtTokenProvider.createRefreshToken(email);
 
-        return new LoginResponseDTO(token);
+        RefreshToken tokenEntity = RefreshToken.builder()
+                .email(email)
+                .refreshToken(refreshToken)
+                .expiryDate(new Date())
+                .build();
+
+        refreshTokenRepository.save(tokenEntity);
+
+        return new TokenResponseDTO(accessToken, refreshToken);
     }
 
+    // 로그아웃
+    public void logout(String refreshToken) {
 
+        jwtTokenProvider.validateRefreshToken(refreshToken);
 
+        String email = jwtTokenProvider.getUserEmailFromToken(refreshToken);
+        RefreshToken storedToken = refreshTokenRepository.findById(email)
+                .orElseThrow(() -> new BusinessException(ErrorCode.REFRESH_TOKEN_NOT_FOUND,
+                        "로그아웃 대상 Refresh Token이 존재하지 않습니다."));
+        if (!storedToken.getRefreshToken().equals(refreshToken)) {
+            throw new BusinessException(ErrorCode.REFRESH_TOKEN_MISMATCH,
+                    "Refresh Token이 일치하지 않아 로그아웃할 수 없습니다.");
+        }
+        refreshTokenRepository.delete(storedToken);
+    }
+
+    // 토큰 재발급
+    public TokenResponseDTO refresh(String refreshToken) {
+
+        jwtTokenProvider.validateRefreshToken(refreshToken);
+        String email = jwtTokenProvider.getUserEmailFromToken(refreshToken);
+
+        RefreshToken storedToken = refreshTokenRepository.findById(email)
+                .orElseThrow(() -> new BusinessException(ErrorCode.REFRESH_TOKEN_NOT_FOUND, "Refresh Token이 존재하지 않습니다."));
+
+        if (!storedToken.getRefreshToken().equals(refreshToken)) {
+            throw new BusinessException(ErrorCode.REFRESH_TOKEN_MISMATCH, "Refresh Token이 일치하지 않습니다.");
+        }
+
+        String newAccessToken = jwtTokenProvider.createAccessToken(email);
+
+        return new TokenResponseDTO(newAccessToken, refreshToken);
+    }
 }

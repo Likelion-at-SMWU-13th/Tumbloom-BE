@@ -2,6 +2,7 @@ package com.tumbloom.tumblerin.global.config;
 
 import com.tumbloom.tumblerin.global.security.JwtAuthenticationFilter;
 import com.tumbloom.tumblerin.global.security.JwtTokenProvider;
+import com.tumbloom.tumblerin.global.security.SecurityConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,17 +28,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers(
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/v3/api-docs",
-                                "/swagger-resources/**",
-                                "/swagger-resources",
-                                "/webjars/**",
-                                "/configuration/**",
-                                "/api/auth/signup",
-                                "/api/auth/login"
-                        ).permitAll()
+                        .requestMatchers(SecurityConstants.AUTH_WHITELIST).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)

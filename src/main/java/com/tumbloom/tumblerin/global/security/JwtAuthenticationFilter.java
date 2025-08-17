@@ -23,21 +23,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    private static final String[] WHITE_LIST = {
-            "/api/auth/signup",
-            "/api/auth/login",
-            "/swagger-ui/**",
-            "/v3/api-docs/**",
-            "/v3/api-docs",
-            "/swagger-resources/**",
-            "/swagger-resources",
-            "/webjars/**",
-            "/configuration/**"
-    };
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
     private boolean isWhiteListed(String path) {
-        for (String pattern : WHITE_LIST) {
+        for (String pattern : SecurityConstants.AUTH_WHITELIST) {
             if (pathMatcher.match(pattern, path)) {
                 return true;
             }
@@ -57,30 +46,40 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String authorizationHeader = request.getHeader("Authorization");
-        String token = null;
-
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            token = authorizationHeader.substring(7);
-        }
-
-        if (token == null || !jwtTokenProvider.validateToken(token)) {
-            log.warn("유효하지 않은 JWT 토큰 요청 - 경로: {}, IP: {}", request.getRequestURI(), request.getRemoteAddr());
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setContentType("application/json;charset=UTF-8");
-
-            ApiResponseTemplate<String> errorResponse = ApiResponseTemplate.error(ErrorCode.UNAUTHORIZED_EXCEPTION, "토큰이 유효하지 않습니다.").getBody();
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            String json = objectMapper.writeValueAsString(errorResponse);
-
-            response.getWriter().write(json);
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            log.warn("Authorization 헤더 없음 - method: {}, path: {}, IP: {}",
+                    request.getMethod(), path, request.getRemoteAddr());
+            sendErrorResponse(response, "Authorization 헤더가 없습니다.");
             return;
         }
 
-        Authentication authentication = jwtTokenProvider.getAuthentication(token);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = authHeader.substring(7);
+        try {
+            jwtTokenProvider.validateToken(token);
+            Authentication auth = jwtTokenProvider.getAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication(auth);
+        } catch (BusinessException e) {
+            log.warn("JWT 인증 실패 - method: {}, path: {}, IP: {}, reason: {}",
+                    request.getMethod(), path, request.getRemoteAddr(), e.getMessage());
+            sendErrorResponse(response, e.getMessage());
+            return;
+        }
 
         filterChain.doFilter(request, response);
+    }
+
+    private void sendErrorResponse(HttpServletResponse response, String message) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json;charset=UTF-8");
+
+        ApiResponseTemplate<String> errorResponse = ApiResponseTemplate
+                .error(ErrorCode.UNAUTHORIZED_EXCEPTION, message)
+                .getBody();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(errorResponse);
+
+        response.getWriter().write(json);
     }
 }
