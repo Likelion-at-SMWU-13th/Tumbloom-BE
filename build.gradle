@@ -39,6 +39,7 @@ dependencies {
     implementation 'org.hibernate.orm:hibernate-spatial:6.4.4.Final'
     implementation "org.locationtech.jts:jts-core:1.19.0"
 
+
     compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
@@ -67,4 +68,8 @@ tasks.named('test') {
 
 bootJar {
 	archiveFileName = 'app.jar'
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	from {
+		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+	}
 }
