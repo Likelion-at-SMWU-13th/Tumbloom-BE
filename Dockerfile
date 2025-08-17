@@ -9,7 +9,7 @@ WORKDIR /home/gradle/project
 RUN gradle build -x test
 
 # --- Step 2: 실행 단계 ---
-FROM eclipse-temurin:17-jdk-alpine
+FROM openjdk:17
 WORKDIR /app
 
 # 빌드 결과물 JAR 복사
