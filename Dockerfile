@@ -13,7 +13,7 @@ FROM openjdk:17
 WORKDIR /app
 
 # 빌드 결과물 JAR 복사
-COPY --from=build /home/gradle/project/build/libs/*.jar app.jar
+COPY --from=build /home/gradle/project/build/libs/app.jar app.jar
 
 # Spring Boot prod profile 활성화
 ENV SPRING_PROFILES_ACTIVE=prod
