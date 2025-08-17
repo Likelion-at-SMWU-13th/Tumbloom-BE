@@ -1,5 +1,4 @@
 spring:
-  port: ${PORT:8080}
   datasource:
     url: ${DB_JDBC_URL}
     username: ${DB_USER}
