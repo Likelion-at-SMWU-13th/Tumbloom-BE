@@ -42,7 +42,8 @@ public class SwaggerConfig {
                         .addSecuritySchemes("BearerAuth", bearerAuth))
                 .addSecurityItem(securityRequirement)
                 .servers(List.of(
-                        new Server().url("http://localhost:8080") //로컬 서버 추후 배포시 배포서버도
+                        new Server().url("http://localhost:8080").description("Local Server"),
+                        new Server().url("http://13.125.241.205:8080").description("EC2 배포 서버")
                 ));
     }
 }
