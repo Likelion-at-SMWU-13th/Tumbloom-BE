@@ -23,9 +23,9 @@ public class UserHomeInfoDTO {
     @Data
     @Builder
     public static class StampStatusDTO {
-        private String Summary;
+        private String summary;
         private int currentCount;
-        private boolean isExchangeable;
+        private boolean exchangeable;
     }
 }
 

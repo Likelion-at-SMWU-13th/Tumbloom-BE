@@ -118,9 +118,9 @@ public class MyPageController {
             description = """
         홈 화면에서의 히어로 섹션과 도장판 정보를 반환합니다.
         이때, 도장판 정보에서
-        - stampSummary는 현재 유효한 stamp 수를 n/8 의 형태로 반환합니다.
-        - currentStampCount는 도장판에 찍혀야 할 도장의 개수를 가리킵니다.
-        - canExchangeCoupon는 현재 유효한 stamp 수가 8개 이상인지 알 수 있는 플래그 값입니다.
+        - summary는 현재 유효한 stamp 수를 n/8 의 형태로 반환합니다.
+        - currentCount는 도장판에 찍혀야 할 도장의 개수를 가리킵니다.
+        - exchangeable은 현재 유효한 stamp 수가 8개 이상인지를 확인하는 플래그 값입니다.
         """)
     @ApiResponse(responseCode = "200", description = "성공",
             content = @Content(schema = @Schema(implementation = UserHomeInfoDTO.class)))

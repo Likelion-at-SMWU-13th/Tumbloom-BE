@@ -80,8 +80,8 @@ public class MyPageService {
 
         UserHomeInfoDTO.StampStatusDTO stampStatus = UserHomeInfoDTO.StampStatusDTO.builder()
                 .currentCount(currentStampCount)
-                .isExchangeable(exchangeable)
-                .Summary(stampSummary)
+                .exchangeable(exchangeable)
+                .summary(stampSummary)
                 .build();
 
         // 최종 DTO
