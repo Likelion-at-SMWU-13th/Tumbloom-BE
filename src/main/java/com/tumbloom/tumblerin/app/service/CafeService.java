@@ -191,7 +191,7 @@ public class CafeService {
     @Transactional(readOnly = true)
     public List<CafeListResponseDTO> getNearbyTop5CafeList(double longitude, double latitude, Long userId) {
 
-        List<Cafe> nearbyTop5CafeList = cafeRepository.findNearbyTop5CafeList(longitude, latitude, RADIUS_METERS);
+        List<Cafe> nearbyTop5CafeList = cafeRepository.findNearbyTop5CafeList(longitude, latitude);
         return getCafeListResponseDTOS(userId, nearbyTop5CafeList);
 
     }

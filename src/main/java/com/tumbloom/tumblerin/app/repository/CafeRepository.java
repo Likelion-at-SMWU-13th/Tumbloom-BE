@@ -41,19 +41,13 @@ public interface CafeRepository extends JpaRepository<Cafe, Long> {
     @Query(value = """
     SELECT c.*
     FROM cafe c
-    WHERE ST_Distance_Sphere(
-            c.location,
-            ST_SRID(POINT(:lon, :lat), 4326)
-          ) <= :radiusMeters
     ORDER BY ST_Distance_Sphere(
             c.location,
             ST_SRID(POINT(:lon, :lat), 4326)
           )
     LIMIT 5
     """, nativeQuery = true)
-    List<Cafe> findNearbyTop5CafeList(@Param("lon") double lon, @Param("lat") double lat, @Param("radiusMeters") double radiusMeters);
-
-
+    List<Cafe> findNearbyTop5CafeList(@Param("lon") double lon, @Param("lat") double lat);
 
     // 카페목록 조회용 _ 직원확인코드를 위한
     List<Cafe> findAllByVerificationCodeIsNotNullOrderByCafeNameAsc();
