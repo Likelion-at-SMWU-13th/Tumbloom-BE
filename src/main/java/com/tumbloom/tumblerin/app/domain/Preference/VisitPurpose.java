@@ -7,7 +7,8 @@ public enum VisitPurpose {
     EMOTIONAL_ATMOSPHERE,
     STUDY_WORKSPACE,
     CHAT_MEETING,
-    HOT_PLACE;
+    HOT_PLACE,
+    EVENT;
 
     public static ExtraOption fromString(String value) {
         try {

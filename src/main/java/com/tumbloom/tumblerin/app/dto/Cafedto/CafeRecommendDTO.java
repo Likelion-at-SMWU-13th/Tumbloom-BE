@@ -17,14 +17,6 @@ public class CafeRecommendDTO {
     private double similarity;
     private boolean favorite;
 
-    public CafeRecommendDTO(Cafe cafe, double similarity) {
-        this.id = cafe.getId();
-        this.cafeName = cafe.getCafeName();
-        this.address = cafe.getAddress();
-        this.imageUrl = cafe.getImageUrl();
-        this.similarity = similarity;
-        this.favorite = false;
-    }
 
     public CafeRecommendDTO(Cafe cafe, double similarity, boolean favorite) {
         this.id = cafe.getId();
