@@ -43,7 +43,7 @@ public class SwaggerConfig {
                 .addSecurityItem(securityRequirement)
                 .servers(List.of(
                         new Server().url("http://localhost:8080").description("Local Server"),
-                        new Server().url("http://3.39.187.47:8080").description("EC2 배포 서버")
+                        new Server().url("https://tumbloom.store").description("deploy Server")
                 ));
     }
 }
