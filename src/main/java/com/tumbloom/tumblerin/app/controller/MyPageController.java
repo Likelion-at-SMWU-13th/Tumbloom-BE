@@ -60,7 +60,7 @@ public class MyPageController {
         // levelProgress 계산
         int min = MyPageService.getMinStampsForLevel(userinfo.getLevel());
         int max = MyPageService.getMaxStampsForLevel(userinfo.getLevel());
-        double progress = (double)(userinfo.getTumblerUsageCount() - min) / (max - min);
+        double progress = (double)(userinfo.getTumblerCount() - min) / (max - min);
         progress = Math.min(progress, 1.0);// 최대 1.0으로 제한
         // 소수점 2자리로 반올림
         progress = Math.round(progress * 100.0) / 100.0;
@@ -75,13 +75,12 @@ public class MyPageController {
         사용자의 선호도를 저장하거나 업데이트합니다. 요청 및 응답에 쓰이는 값들은 아래로 고정입니다.
 
         가능한 값:
-
         - visitPurposes (방문 목적):
-          'EMOTIONAL_ATMOSPHERE', 'STUDY_WORKSPACE', 'CHAT_MEETING', 'HOT_PLACE', 'EVENT'
+          "EMOTIONAL_ATMOSPHERE", "STUDY_WORKSPACE", "CHAT_MEETING", "HOT_PLACE", "EVENT"
         - preferredMenus (선호 메뉴):
-          'SPECIALTY', 'DESSERT', 'DECAF', 'SEASON_MENU', 'BRUNCH'
+          "SPECIALTY", "DESSERT", "DECAF", "SEASON_MENU", "BRUNCH"
         - extraOptions (추가 옵션):
-          'FRANCHISE', 'PET_FRIENDLY', 'OUTDOOR_TERRACE', 'ECO_LOCAL', 'UNIQUE_THEME'
+          "FRANCHISE", "PET_FRIENDLY", "OUTDOOR_TERRACE", "ECO_LOCAL", "UNIQUE_THEME"
         """
     )
     @ApiResponse(responseCode = "200", description = "성공")
