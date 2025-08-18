@@ -55,4 +55,14 @@ public class Cafe {
         menu.setCafe(this);
     }
 
+
+    // 직원확인코드를 최초 1회만 설정하기 위한 도메인 메소드
+    public void assignVerificationCode(String code) {
+        if (this.verificationCode != null && !this.verificationCode.isBlank()) {
+            // 이미 존재하면 무시(또는 예외)
+            return;
+        }
+        this.verificationCode = code;
+    }
+
 }
