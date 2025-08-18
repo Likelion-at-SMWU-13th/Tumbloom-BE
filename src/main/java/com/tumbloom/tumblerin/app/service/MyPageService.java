@@ -34,22 +34,22 @@ public class MyPageService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, null));
 
-        int tumblerUsageCount = stampRepository.countByUserId(userId);
-        int couponIssuedCount = couponRepository.countByUserId(userId);
+        int tumblerCount = stampRepository.countByUserId(userId);
+        int issuedCoupons = couponRepository.countByUserId(userId);
         int availableCoupons = couponRepository.countByUserIdAndIsUsedFalse(userId);
-        int favoriteCafeCount = favoriteRepository.countByUserId(userId);
-        String levelName = getLevelName(tumblerUsageCount);
-        int remaining = remainingToNextLevel(tumblerUsageCount);
+        int favoriteCafes = favoriteRepository.countByUserId(userId);
 
+        String levelName = getLevelName(tumblerCount);
+        int stepsLeft = remainingToNextLevel(tumblerCount);
 
         return UserMyPageResponseDTO.builder()
                 .nickname(user.getNickname())
                 .level(levelName)
-                .remainingSteps(remaining)
-                .tumblerUsageCount(tumblerUsageCount)
-                .couponIssuedCount(couponIssuedCount)
+                .stepsLeft(stepsLeft)
+                .tumblerCount(tumblerCount)
+                .issuedCoupons(issuedCoupons)
                 .availableCoupons(availableCoupons)
-                .favoriteCafeCount(favoriteCafeCount)
+                .favoriteCafes(favoriteCafes)
                 .build();
 
     }
@@ -64,49 +64,40 @@ public class MyPageService {
         int issuedCoupons = couponRepository.countByUserId(userId);
 
 
-        /*
-        쿠폰 발급후 남은 가용 stamp 수 계산
-         */
-        int availableStampCount = totalStampCount - (issuedCoupons * 8);
-        availableStampCount = Math.max(availableStampCount, 0);
+        int availableStampCount = calculateAvailableStampCount(totalStampCount, issuedCoupons);
+        int currentStampCount = calculateCurrentStampCount(availableStampCount);
 
-        /*
-        도장판에 찍힐 stamp 수
-         */
-        int currentStampCount = availableStampCount % 8;
-        if(currentStampCount == 0 && availableStampCount > 0){
-            currentStampCount = 8; // 딱 8의 배수일 때 도장판 꽉 차게 표시
-        }
+        boolean exchangeable = availableStampCount >= 8;
 
-         /*
-        쿠폰 교환 팝업 띄우기 여부 플래그 값
-         */
-        boolean canExchangeCoupon = availableStampCount >= 8;
-
-        /*
-        가용 도장 및 도장판 현황 요약 : N/8
-         */
         String stampSummary = availableStampCount + "/8";
 
-        UserHomeInfoDTO homeInfoDTO = new UserHomeInfoDTO();
+        UserHomeInfoDTO.WelcomeStatusDTO welcomeStatus = UserHomeInfoDTO.WelcomeStatusDTO.builder()
+                .nickname(user.getNickname())
+                .tumblerCount(String.format("%02d회", totalStampCount))
+                .savedWater(String.format("%.2fL", totalStampCount * 0.55))
+                .savedTree(String.format("%.3f 그루", totalStampCount * 0.003))
+                .build();
 
-        // WelcomeStatusDTO
-        UserHomeInfoDTO.WelcomeStatusDTO welcomeStatus = homeInfoDTO.new WelcomeStatusDTO();
-        welcomeStatus.setUserNickname(user.getNickname());
-        welcomeStatus.setTumblerUsageCount(String.format("%02d회", totalStampCount));
-        welcomeStatus.setWaterSavedLiter(String.format("%.2fL", totalStampCount * 0.55));
-        welcomeStatus.setTreeSavedCount(String.format("%.3f 그루", totalStampCount * 0.003));
+        UserHomeInfoDTO.StampStatusDTO stampStatus = UserHomeInfoDTO.StampStatusDTO.builder()
+                .currentCount(currentStampCount)
+                .isExchangeable(exchangeable)
+                .Summary(stampSummary)
+                .build();
 
-        // StampStatusDTO 구성
-        UserHomeInfoDTO.StampStatusDTO stampStatus = homeInfoDTO.new StampStatusDTO();
-        stampStatus.setCurrentStampCount(currentStampCount);
-        stampStatus.setCanExchangeCoupon(canExchangeCoupon);
-        stampStatus.setStampSummary(stampSummary);
+        // 최종 DTO
+        return UserHomeInfoDTO.builder()
+                .welcomeStatus(welcomeStatus)
+                .stampStatus(stampStatus)
+                .build();
+    }
 
-        homeInfoDTO.setWelcomeStatus(welcomeStatus);
-        homeInfoDTO.setStampStatus(stampStatus);
+    private int calculateAvailableStampCount(int totalStampCount, int issuedCoupons) {
+        return Math.max(totalStampCount - (issuedCoupons * 8), 0);
+    }
 
-        return homeInfoDTO;
+    private int calculateCurrentStampCount(int availableStampCount) {
+        int currentStampCount = availableStampCount % 8;
+        return (currentStampCount == 0 && availableStampCount > 0) ? 8 : currentStampCount;
     }
 
     @Transactional(readOnly = true)
@@ -159,11 +150,11 @@ public class MyPageService {
 
     public static int getMaxStampsForLevel(String level) {
         return switch(level) {
-            case "Lv1. 텀블러 뉴비" -> 5;
-            case "Lv2. 텀블러 입문자" -> 11;
-            case "Lv3. 텀블러 러버" -> 21;
-            case "Lv4. 텀블러 고수" -> 41;
-            case "Lv5. 텀블러 히어로" -> 41;  // 마지막 레벨은 고정
+            case "Lv1. 텀블러 뉴비" -> 4;
+            case "Lv2. 텀블러 입문자" -> 10;
+            case "Lv3. 텀블러 러버" -> 20;
+            case "Lv4. 텀블러 고수" -> 40;
+            case "Lv5. 텀블러 히어로" -> Integer.MAX_VALUE;
             default -> 0;
         };
     }

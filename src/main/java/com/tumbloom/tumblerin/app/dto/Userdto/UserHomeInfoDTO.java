@@ -1,32 +1,31 @@
 package com.tumbloom.tumblerin.app.dto.Userdto;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 
-@Setter
-@Getter
+
+@Data
+@Builder
 public class UserHomeInfoDTO {
     private WelcomeStatusDTO welcomeStatus;
     private StampStatusDTO stampStatus;
 
 
-    @Setter
-    @Getter
-    public class WelcomeStatusDTO {
-        private String userNickname;
-        private String tumblerUsageCount;
-        private String waterSavedLiter;
-        private String treeSavedCount;
+    @Data
+    @Builder
+    public static class WelcomeStatusDTO {
+        private String nickname;
+        private String tumblerCount;
+        private String savedWater;
+        private String savedTree;
     }
-
-    @Setter
-    @Getter
-    public class StampStatusDTO {
-        private String stampSummary;
-        private int currentStampCount;
-        private boolean canExchangeCoupon;
+    @Data
+    @Builder
+    public static class StampStatusDTO {
+        private String Summary;
+        private int currentCount;
+        private boolean isExchangeable;
     }
 }
 
