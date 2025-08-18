@@ -22,9 +22,4 @@ public class Stamp {
     @JoinColumn(name = "cafe_id", nullable = false)
     private Cafe cafe;
 
-    @Column
-    private String field1;
-
-    @Column
-    private String field2;
 }

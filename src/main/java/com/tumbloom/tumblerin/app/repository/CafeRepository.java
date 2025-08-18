@@ -53,4 +53,9 @@ public interface CafeRepository extends JpaRepository<Cafe, Long> {
     """, nativeQuery = true)
     List<Cafe> findNearbyTop5CafeList(@Param("lon") double lon, @Param("lat") double lat, @Param("radiusMeters") double radiusMeters);
 
+
+
+    // 카페목록 조회용 _ 직원확인코드를 위한
+    List<Cafe> findAllByVerificationCodeIsNotNullOrderByCafeNameAsc();
+
 }
