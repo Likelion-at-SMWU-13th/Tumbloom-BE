@@ -4,15 +4,6 @@
 
 # 🌱 Tumblerin Project
 
-<div align="center">
-
-![GitHub stars](https://img.shields.io/github/stars/YourRepoName?style=flat-square&color=yellow)
-![GitHub forks](https://img.shields.io/github/forks/YourRepoName?style=flat-square&color=blue)
-![GitHub issues](https://img.shields.io/github/issues/YourRepoName?style=flat-square&color=red)
-
-</div>
-
----
 
 ## 📌 About Us
 
@@ -55,8 +46,8 @@
 ## 📂 Repository Structure
 - **Backend**: [`Tumbloom-BE`](https://github.com/Likelion-at-SMWU-13th/Tumbloom-BE.git)  
 - **Frontend**: [`Tumbloom-FE`](https://github.com/Likelion-at-SMWU-13th/Tumbloom-FE.git)  
-- **Server Example**: [`OnDongNae-Server`](https://github.com/YourRepo/OnDongNae-Server)  
-- **Client Example**: [`OnDongNae-Client`](https://github.com/YourRepo/OnDongNae-Client)  
+- **Server**: [`OnDongNae-Server`](https://github.com/YourRepo/OnDongNae-Server)  
+- **Client**: [`OnDongNae-Client`](https://github.com/YourRepo/OnDongNae-Client)  
 
 ---
 
