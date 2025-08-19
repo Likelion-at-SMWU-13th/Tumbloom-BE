@@ -52,7 +52,8 @@
 
 ---
 
-
+## 🤝 Contributors
+<div align="center">
 <br/>
 
 ## 멤버
@@ -63,6 +64,8 @@
 | 🍎홍상희 | Back-end | [SEOMUNJI](https://github.com/SEOMUNJI)  | 식사 기록/분석, 컨디션 기록 구현, 더미데이터 정리 및 추가 |
 
 <br/>
+</div>
+
 
 ## 📖 Getting Started
 ```bash
