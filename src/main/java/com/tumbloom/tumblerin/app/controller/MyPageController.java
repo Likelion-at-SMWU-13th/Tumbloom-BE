@@ -38,8 +38,8 @@ public class MyPageController {
     사용자 정보, 레벨, 쿠폰 수, 즐겨찾기 수, 상위 선호도 3개를 반환합니다.
     - 이때 필드 중 remainingSteps는 다음 단계까지 남은 횟수를 가리킵니다.
     - levelProgress는 level 바에 표시하기 위한 수치값으로 0~1의 값을 반환합니다.""")
-    @ApiResponse(responseCode = "200", description = "성공",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserMyPageResponseDTO.class)))
+    @ApiResponse(responseCode = "200", description = "성공"/*,
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserMyPageResponseDTO.class))*/)
     @GetMapping("/mypage")
     public ResponseEntity<?> getUserInfo(@AuthenticationPrincipal CustomUserDetails userDetails){
         UserMyPageResponseDTO userinfo = myPageService.getUserInfo(userDetails.getUser().getId());
@@ -94,8 +94,8 @@ public class MyPageController {
     }
 
     @Operation(summary = "(참고)선호도 조회", description = "사용자의 선호도를 조회합니다.")
-    @ApiResponse(responseCode = "200", description = "성공",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserPreferenceDTO.class)))
+    @ApiResponse(responseCode = "200", description = "성공"/*,
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserPreferenceDTO.class))*/)
     @GetMapping("/preferences")
     public ResponseEntity<?> getPreference(@AuthenticationPrincipal CustomUserDetails userDetails) {
         UserPreferenceDTO preference = userPreferenceService.getPreference(userDetails.getUser().getId());
@@ -103,8 +103,8 @@ public class MyPageController {
     }
 
     @Operation(summary = "홈 화면 AI 카페 추천 목록 조회", description = "사용자 취향 기반 AI 카페 추천 목록을 조회합니다.")
-    @ApiResponse(responseCode = "200", description = "성공",
-            content = @Content(array = @ArraySchema(schema = @Schema(implementation = CafeRecommendDTO.class))))
+    @ApiResponse(responseCode = "200", description = "성공"/*,
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = CafeRecommendDTO.class)))*/)
     @GetMapping("/cafe-recommendations")
     public ResponseEntity<?> getCafeRecommendations(@AuthenticationPrincipal CustomUserDetails userDetails) {
         List<CafeRecommendDTO> recommendations = cafeRecommendationService.recommendCafesForUser(userDetails.getUser().getId());
@@ -122,8 +122,8 @@ public class MyPageController {
         - currentCount는 도장판에 찍혀야 할 도장의 개수를 가리킵니다.
         - exchangeable은 현재 유효한 stamp 수가 8개 이상인지를 확인하는 플래그 값입니다.
         """)
-    @ApiResponse(responseCode = "200", description = "성공",
-            content = @Content(schema = @Schema(implementation = UserHomeInfoDTO.class)))
+    @ApiResponse(responseCode = "200", description = "성공"/*,
+            content = @Content(schema = @Schema(implementation = UserHomeInfoDTO.class))*/)
     @GetMapping("/home")
     public ResponseEntity<?> getStamps(@AuthenticationPrincipal CustomUserDetails userDetails) {
         UserHomeInfoDTO homeInfo = myPageService.getUserHomeInfo(userDetails.getUser().getId());
@@ -131,8 +131,8 @@ public class MyPageController {
     }
 
     @Operation(summary = "마이페이지 즐겨찾기 카페 목록 조회", description = "사용자가 즐겨찾기한 카페 목록을 반환합니다.")
-    @ApiResponse(responseCode = "200", description = "성공",
-            content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserFavoriteCafeDTO.class))))
+    @ApiResponse(responseCode = "200", description = "성공"/*,
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserFavoriteCafeDTO.class)))*/)
     @GetMapping("/favorites")
     public ResponseEntity<?> getFavoriteCafes(@AuthenticationPrincipal CustomUserDetails userDetails) {
 

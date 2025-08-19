@@ -45,11 +45,7 @@ public class AuthController {
     @PostMapping("/login")
     @Operation(summary = "로그인", description = "이메일과 비밀번호로 로그인하고 Access/Refresh 토큰을 발급받습니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "로그인 성공",
-                    content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = TokenResponseDTO.class)
-            )),
+            @ApiResponse(responseCode = "200", description = "로그인 성공"),
             @ApiResponse(responseCode = "401", description = "인증 실패 (잘못된 비밀번호 및 이메일)"),
             @ApiResponse(responseCode = "404", description = "사용자를 찾을 수 없음")
     })
@@ -73,11 +69,7 @@ public class AuthController {
     @PostMapping("/refresh")
     @Operation(summary = "토큰 재발급", description = "Refresh Token을 이용해 새로운 Access Token을 발급합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "토큰 재발급 성공",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = TokenResponseDTO.class)
-                    )),
+            @ApiResponse(responseCode = "200", description = "토큰 재발급 성공"),
             @ApiResponse(responseCode = "401", description = "Refresh Token 불일치 / 만료 / 위조"),
             @ApiResponse(responseCode = "404", description = "저장된 Refresh Token을 찾을 수 없음")
     })
