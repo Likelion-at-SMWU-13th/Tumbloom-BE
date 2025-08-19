@@ -9,6 +9,8 @@ import com.tumbloom.tumblerin.global.dto.ApiResponseTemplate;
 import com.tumbloom.tumblerin.global.dto.SuccessCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -16,11 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * 직원확인코드 검증 컨트롤러
- * - 코드가 일치하면 스탬프 1개 적립
- * - 불일치 또는 코드 미설정 시 에러 처리(서비스에서 BusinessException)
- */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -31,22 +28,27 @@ public class CafeVerificationController {
     @Operation(
             summary = "직원확인코드 검증(+성공 시 스탬프 적립)",
             description = """
-                직원이 입력한 확인코드가 해당 카페의 코드와 일치하는지 검증합니다.
-                - 일치하면 스탬프 1개를 적립하고 valid=true 를 반환합니다.
-                - 불일치이거나, 해당 카페에 코드가 없으면 400(INVALID_REQUEST) 에러를 반환합니다.
-                요청 예시:
-                POST /api/cafes/{cafeId}/verification-code/verify
-                {
-                  "code": "ABC1234"
-                }
-                """
+            직원이 입력한 확인코드가 해당 카페의 코드와 일치하는지 검증합니다.
+            - 일치하면 스탬프 1개를 적립하고 valid=true 를 반환합니다.
+            - 불일치이거나, 해당 카페에 코드가 없으면 400(INVALID_REQUEST) 에러를 반환합니다.
+            요청 예시:
+            POST /api/cafes/{cafeId}/verification-code/verify
+            {
+              "code": "ABC1234"
+            }
+            """
     )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "검증 및 적립 성공"),
+            @ApiResponse(responseCode = "400", description = "코드 불일치 혹은 미설정"),
+            @ApiResponse(responseCode = "404", description = "카페 또는 사용자 정보 없음")
+    })
     @PostMapping(
             value = "/cafes/{cafeId}/verification-code/verify",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<?> verify(
+    public ResponseEntity<ApiResponseTemplate<VerificationCodeVerifyResponseDTO>> verify(
             @Parameter(description = "카페 ID") @PathVariable Long cafeId,
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @Valid @RequestBody VerificationCodeVerifyRequestDTO request
@@ -54,6 +56,7 @@ public class CafeVerificationController {
         User loginUser = userDetails.getUser();
         VerificationCodeVerifyResponseDTO dto =
                 cafeVerificationService.verifyAndStamp(cafeId, request.getCode(), loginUser);
+
         return ApiResponseTemplate.success(SuccessCode.RESOURCE_RETRIEVED, dto);
     }
 }
