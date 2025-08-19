@@ -3,7 +3,7 @@
 
 ---
 
-# 🌱 Tumblerin Project
+# 🌱 Tumblerin
 
 
 ## 📌 About Us
