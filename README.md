@@ -1,16 +1,6 @@
 # Tumbloom-BE
 멋쟁이사자처럼 중앙해커톤 '텀블룸'팀의 백엔드 레포지토리입니다.
 
-<br/>
-
-## 멤버
-| 이름     | 개발분야  | 개인 레포                                         | 역할                    |
-| -------- | --------- | ------------------------------------------------- | ------------------------- |
-| 🍎이현정 | Back-end | [mxinseo](https://github.com/mxinseo)  | 회원가입 및 유저 정보, 한의원 및 예약 정보, 달력 정보 기능 API 구현, AWS 배포         |
-| 🍎서문지 | Back-end | [SEOMUNJI](https://github.com/SEOMUNJI)  | 식사 기록/분석, 컨디션 기록 구현, 더미데이터 정리 및 추가 |
-| 🍎홍상희 | Back-end | [SEOMUNJI](https://github.com/SEOMUNJI)  | 식사 기록/분석, 컨디션 기록 구현, 더미데이터 정리 및 추가 |
-
-<br/>
 
 # 🌱 Tumblerin Project
 
@@ -25,9 +15,7 @@
 ---
 
 ## 📌 About Us
-**멋쟁이사자처럼 대학** 속명여자대학교 13기  
-“내 아이디어를 내 손으로 실현한다”는 가치를 바탕으로 웹/앱 서비스를 개발하는 동아리입니다.  
-총 58개 대학, 2,000여 명이 참여하는 국내 최대 규모 IT 창업 연합 동아리이며, 저희는 그 중 **속명여대 13기**입니다.
+
 
 ---
 
@@ -51,8 +39,6 @@
 <!-- Backend -->
 ![Java](https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white)
 
 <!-- Infra -->
 ![AWS](https://img.shields.io/badge/AWS-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white)
@@ -67,12 +53,24 @@
 ---
 
 ## 📂 Repository Structure
-- **Backend**: [`Tumbloom-BE`](https://github.com/YourRepo/Tumbloom-BE)  
-- **Frontend**: [`Tumbloom-FE`](https://github.com/YourRepo/Tumbloom-FE)  
+- **Backend**: [`Tumbloom-BE`](https://github.com/Likelion-at-SMWU-13th/Tumbloom-BE.git)  
+- **Frontend**: [`Tumbloom-FE`](https://github.com/Likelion-at-SMWU-13th/Tumbloom-FE.git)  
 - **Server Example**: [`OnDongNae-Server`](https://github.com/YourRepo/OnDongNae-Server)  
 - **Client Example**: [`OnDongNae-Client`](https://github.com/YourRepo/OnDongNae-Client)  
 
 ---
+
+
+<br/>
+
+## 멤버
+| 이름     | 개발분야  | 개인 레포                                         | 역할                    |
+| -------- | --------- | ------------------------------------------------- | ------------------------- |
+| 🍎이현정 | Back-end | [mxinseo](https://github.com/mxinseo)  | 회원가입 및 유저 정보, 한의원 및 예약 정보, 달력 정보 기능 API 구현, AWS 배포         |
+| 🍎서문지 | Back-end | [SEOMUNJI](https://github.com/SEOMUNJI)  | 식사 기록/분석, 컨디션 기록 구현, 더미데이터 정리 및 추가 |
+| 🍎홍상희 | Back-end | [SEOMUNJI](https://github.com/SEOMUNJI)  | 식사 기록/분석, 컨디션 기록 구현, 더미데이터 정리 및 추가 |
+
+<br/>
 
 ## 📖 Getting Started
 ```bash
