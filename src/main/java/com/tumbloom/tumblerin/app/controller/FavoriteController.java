@@ -20,15 +20,21 @@ public class FavoriteController {
     private final FavoriteService favoriteService;
 
     @PostMapping("/{cafeId}")
-    public ResponseEntity<?> addFavorite(@PathVariable Long cafeId, @AuthenticationPrincipal CustomUserDetails userDetails) {
-        favoriteService.addFavorite(userDetails.getUser().getId(),  cafeId);
+    public ResponseEntity<ApiResponseTemplate<String>> addFavorite(
+            @PathVariable Long cafeId,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        favoriteService.addFavorite(userDetails.getUser().getId(), cafeId);
         return ApiResponseTemplate.success(SuccessCode.RESOURCE_CREATED, "즐겨찾기가 성공적으로 추가되었습니다.");
     }
 
     @DeleteMapping("/{cafeId}")
-    public ResponseEntity<?> deleteFavorite(@PathVariable Long cafeId, @AuthenticationPrincipal CustomUserDetails userDetails) {
-        favoriteService.removeFavorite(userDetails.getUser().getId(), cafeId);
-        return ApiResponseTemplate.success(SuccessCode.RESOURCE_DELETED, "즐겨찾기가가 성공적으로 취소되었습니다.");
-    }
+    public ResponseEntity<ApiResponseTemplate<String>> deleteFavorite(
+            @PathVariable Long cafeId,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
 
+        favoriteService.removeFavorite(userDetails.getUser().getId(), cafeId);
+        return ApiResponseTemplate.success(SuccessCode.RESOURCE_DELETED, "즐겨찾기가 성공적으로 취소되었습니다.");
+    }
 }
+
