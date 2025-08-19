@@ -55,9 +55,9 @@
 
 | 이름     | 개발분야  | 개인 레포                                         | 역할                    |
 | -------- | --------- | ------------------------------------------------- | ------------------------- |
-| 🍎이현정 | Back-end | [hyhy-j](https://github.com/hyhy-j)  | 각자 알아서 정리        |
-| 🍎서문지 | Back-end | [SEOMUNJI](https://github.com/SEOMUNJI)  | 각자 알아서 정리   |
-| 🍎홍상희 | Back-end | [SangHee-Hong](https://github.com/SangHee-Hong)  | 각자 알아서 정리, AWS 배포  |
+| 🦁이현정 | Back-end | [hyhy-j](https://github.com/hyhy-j)  | 각자 알아서 정리        |
+| 🦁서문지 | Back-end | [SEOMUNJI](https://github.com/SEOMUNJI)  | 각자 알아서 정리   |
+| 🦁홍상희 | Back-end | [SangHee-Hong](https://github.com/SangHee-Hong)  | 각자 알아서 정리, AWS 배포  |
 
 <br/>
 
