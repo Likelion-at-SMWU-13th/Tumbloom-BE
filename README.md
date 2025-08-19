@@ -22,20 +22,24 @@
 
 <div align="center">
 
+# Frontend
 <!-- Frontend -->
 ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-FFD700?style=for-the-badge&logo=javascript&logoColor=black)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 
+# Backend
 <!-- Backend -->
 ![Java](https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
 
+# Infra
 <!-- Infra -->
 ![AWS](https://img.shields.io/badge/AWS-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 
+# Tools
 <!-- Tools -->
 ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)
 ![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white)
@@ -47,8 +51,8 @@
 ## 📂 Repository Structure
 - **Backend**: [`Tumbloom-BE`](https://github.com/Likelion-at-SMWU-13th/Tumbloom-BE.git)  
 - **Frontend**: [`Tumbloom-FE`](https://github.com/Likelion-at-SMWU-13th/Tumbloom-FE.git)  
-- **Server**: [`OnDongNae-Server`](https://github.com/YourRepo/OnDongNae-Server)  
-- **Client**: [`OnDongNae-Client`](https://github.com/YourRepo/OnDongNae-Client)  
+- **Server**: [``]()  
+- **Client**: [``]()  
 
 ---
 
@@ -63,7 +67,7 @@
 
 <br/>
 
-
+---
 ## 📖 Getting Started
 ```bash
 # Clone repository
