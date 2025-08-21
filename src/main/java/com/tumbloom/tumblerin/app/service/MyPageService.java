@@ -39,12 +39,12 @@ public class MyPageService {
         int availableCoupons = couponRepository.countByUserIdAndIsUsedFalse(userId);
         int favoriteCafes = favoriteRepository.countByUserId(userId);
 
-        String levelName = getLevelName(tumblerCount);
+        int level = getLevel(tumblerCount);
         int stepsLeft = remainingToNextLevel(tumblerCount);
 
         return UserMyPageResponseDTO.builder()
                 .nickname(user.getNickname())
-                .level(levelName)
+                .level(level)
                 .stepsLeft(stepsLeft)
                 .tumblerCount(tumblerCount)
                 .issuedCoupons(issuedCoupons)
@@ -119,12 +119,12 @@ public class MyPageService {
                 .collect(Collectors.toList());
     }
 
-    public static String getLevelName(int stampCount) {
-        if (stampCount <= 4) return "Lv1. 텀블러 뉴비";
-        else if (stampCount <= 10) return "Lv2. 텀블러 입문자";
-        else if (stampCount <= 20) return "Lv3. 텀블러 러버";
-        else if (stampCount <= 40) return "Lv4. 텀블러 고수";
-        else return "Lv5. 텀블러 히어로";
+    public static int getLevel(int stampCount) {
+        if (stampCount <= 4) return 1; // Lv1
+        else if (stampCount <= 10) return 2; // Lv2
+        else if (stampCount <= 20) return 3; // Lv3
+        else if (stampCount <= 40) return 4; // Lv4
+        else return 5; // Lv5
     }
 
     public static int remainingToNextLevel(int stampCount) {
@@ -135,24 +135,24 @@ public class MyPageService {
         else return 0;
     }
 
-    public static int getMinStampsForLevel(String level) {
+    public static int getMinStampsForLevel(int level) {
         return switch(level) {
-            case "Lv1. 텀블러 뉴비" -> 0;
-            case "Lv2. 텀블러 입문자" -> 5;
-            case "Lv3. 텀블러 러버" -> 11;
-            case "Lv4. 텀블러 고수" -> 21;
-            case "Lv5. 텀블러 히어로" -> 41;
+            case 1 -> 0;
+            case 2 -> 5;
+            case 3 -> 11;
+            case 4 -> 21;
+            case 5 -> 41;
             default -> 0;
         };
     }
 
-    public static int getMaxStampsForLevel(String level) {
+    public static int getMaxStampsForLevel(int level) {
         return switch(level) {
-            case "Lv1. 텀블러 뉴비" -> 4;
-            case "Lv2. 텀블러 입문자" -> 10;
-            case "Lv3. 텀블러 러버" -> 20;
-            case "Lv4. 텀블러 고수" -> 40;
-            case "Lv5. 텀블러 히어로" -> Integer.MAX_VALUE;
+            case 1 -> 4;
+            case 2 -> 10;
+            case 3 -> 20;
+            case 4 -> 40;
+            case 5 -> Integer.MAX_VALUE;
             default -> 0;
         };
     }
