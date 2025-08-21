@@ -69,8 +69,6 @@ public class MyPageService {
 
         boolean exchangeable = availableStampCount >= 8;
 
-        String stampSummary = availableStampCount + "/8";
-
         UserHomeInfoDTO.WelcomeStatusDTO welcomeStatus = UserHomeInfoDTO.WelcomeStatusDTO.builder()
                 .nickname(user.getNickname())
                 .tumblerCount(String.format("%02d회", totalStampCount))
@@ -81,7 +79,7 @@ public class MyPageService {
         UserHomeInfoDTO.StampStatusDTO stampStatus = UserHomeInfoDTO.StampStatusDTO.builder()
                 .currentCount(currentStampCount)
                 .exchangeable(exchangeable)
-                .summary(stampSummary)
+                .validStampCnt(availableStampCount)
                 .build();
 
         // 최종 DTO

@@ -23,7 +23,7 @@ public class UserHomeInfoDTO {
     @Data
     @Builder
     public static class StampStatusDTO {
-        private String summary;
+        private int validStampCnt;
         private int currentCount;
         private boolean exchangeable;
     }
