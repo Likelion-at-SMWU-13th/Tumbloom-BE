@@ -10,7 +10,7 @@ import java.util.List;
 @Builder
 public class UserMyPageResponseDTO {
     private String nickname;
-    private String level;
+    private int level;
     private int stepsLeft;
     private int tumblerCount;
     private int issuedCoupons;
