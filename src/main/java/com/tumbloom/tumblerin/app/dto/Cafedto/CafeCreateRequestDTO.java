@@ -12,6 +12,7 @@ public class CafeCreateRequestDTO {
     private String cafeName;
     private String imageUrl;
     private String address;
+    private String detailAddress;
     private String businessHours;
     private double latitude;
     private double longitude;

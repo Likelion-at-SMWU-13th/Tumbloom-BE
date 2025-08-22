@@ -57,6 +57,7 @@ public class CafeService {
                 .cafeName(request.getCafeName())
                 .imageUrl(request.getImageUrl())
                 .address(request.getAddress())
+                .detailAddress(request.getDetailAddress())
                 .businessHours(request.getBusinessHours())
                 .location(location)
                 .qrLink(request.getQrLink())
@@ -110,6 +111,7 @@ public class CafeService {
                     .cafeName(request.getCafeName())
                     .imageUrl(request.getImageUrl())
                     .address(request.getAddress())
+                    .detailAddress(request.getDetailAddress())
                     .businessHours(request.getBusinessHours())
                     .location(location)
                     .qrLink(request.getQrLink())
@@ -171,6 +173,7 @@ public class CafeService {
                 cafe.getCafeName(),
                 cafe.getImageUrl(),
                 cafe.getAddress(),
+                cafe.getDetailAddress(),
                 cafe.getBusinessHours(),
                 cafe.getCallNumber(),
                 menuDTOList,

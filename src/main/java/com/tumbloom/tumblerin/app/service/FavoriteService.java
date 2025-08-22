@@ -49,6 +49,7 @@ public class FavoriteService {
     // 즐겨찾기 삭제
     @Transactional
     public void removeFavorite(Long userId, Long cafeId) {
+
         favoriteRepository.deleteByUserIdAndCafeId(userId, cafeId);
     }
 
