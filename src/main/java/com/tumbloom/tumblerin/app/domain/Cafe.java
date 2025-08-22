@@ -26,6 +26,9 @@ public class Cafe {
     @Column(nullable = false)
     private String address;
 
+    @Column(nullable = false)
+    private String detailAddress;
+
     private String businessHours;
 
     @Column(columnDefinition = "POINT SRID 4326", nullable=false) // 위경도
