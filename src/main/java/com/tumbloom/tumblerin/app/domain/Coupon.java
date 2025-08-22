@@ -36,7 +36,7 @@ public class Coupon {
     private String content;
 
     @Column
-    private Integer discountPrice;    // 정수값 (1000~
+    private Integer discountPrice;
 
-    private String imageUrl;      // 카페 이미지
+    private String imageUrl;
 }

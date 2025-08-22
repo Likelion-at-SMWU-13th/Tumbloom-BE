@@ -82,7 +82,7 @@ public class CouponService {
                 .cafeName(cafe.getCafeName())
                 .expiredDate(LocalDate.now().plusMonths(6).format(EXP_FMT))
                 .isUsed(false)
-                .content(discount + "원 할인")
+                .content(discount + "원")
                 .discountPrice(discount)
                 .imageUrl(cafe.getImageUrl())
                 .build();
