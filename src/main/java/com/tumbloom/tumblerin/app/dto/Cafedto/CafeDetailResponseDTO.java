@@ -13,6 +13,7 @@ public class CafeDetailResponseDTO {
     private String cafeName;
     private String imageUrl;
     private String address;
+    private String detailAddress;
     private String businessHours;
     private String callNumber;
     private List<MenuDTO> menuList;
