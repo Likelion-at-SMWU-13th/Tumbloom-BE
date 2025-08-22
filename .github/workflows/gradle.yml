@@ -58,7 +58,7 @@ jobs:
             # 새 JAR 실행 (백그라운드, nohup)
             cd /home/ubuntu/project/Tumbloom-BE/build/libs
             nohup java -jar tumblerin-0.0.1-SNAPSHOT.jar > ../logs/tumblerin.log 2>&1 &
-            
+            disown
             # Nginx 재시작
             sudo systemctl restart nginx
             sudo systemctl status nginx
