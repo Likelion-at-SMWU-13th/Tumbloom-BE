@@ -13,6 +13,7 @@ import com.tumbloom.tumblerin.global.exception.BusinessException;
 import com.tumbloom.tumblerin.global.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -47,11 +48,20 @@ public class UserService {
 
     public TokenResponseDTO login(LoginRequestDTO request) {
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
+        userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND,"해당 이메일은 존재하지 않습니다."));
 
-        String email = authentication.getName();
+        // 2️⃣ 비밀번호 검증
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+            );
+        } catch (BadCredentialsException ex) {
+            throw new BusinessException(ErrorCode.UNAUTHORIZED_EXCEPTION, "해당 이메일 계정의 비밀번호가 올바르지 않습니다."); // 401
+        }
+
+
+        String email = request.getEmail();
         String accessToken = jwtTokenProvider.createAccessToken(email);
         String refreshToken = jwtTokenProvider.createRefreshToken(email);
 
