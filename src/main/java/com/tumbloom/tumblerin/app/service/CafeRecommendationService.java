@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -31,8 +32,10 @@ public class CafeRecommendationService {
         UserPreference preference = upRepository.findDetailByUserId(userId)
                 .orElse(null);
 
-        if (preference == null) {
-            return null;
+        if (preference == null || (preference.getVisitPurposes().isEmpty()
+                && preference.getPreferredMenus().isEmpty()
+                && preference.getExtraOptions().isEmpty())) {
+            return Collections.emptyList();
         }
 
         // 1. 사용자 취향 → 텍스트 변환
