@@ -61,19 +61,3 @@
 
 <br/>
 
----
-## 📖 Getting Started
-```bash
-# Clone repository
-git clone https://github.com/YourRepo/Tumblerin.git
-
-# Install dependencies
-cd Tumblerin-FE
-npm install
-
-# Run frontend
-npm start
-
-# Run backend
-cd ../Tumbloom-BE
-./gradlew bootRun
