@@ -47,7 +47,7 @@
 ## 📂 Repository Structure
 - **Backend**: [`Tumbloom-BE`](https://github.com/Likelion-at-SMWU-13th/Tumbloom-BE.git)  
 - **Frontend**: [`Tumbloom-FE`](https://github.com/Likelion-at-SMWU-13th/Tumbloom-FE.git)  
-- **Server**: [`https://tumbloom.store/`](https://tumbloom.store/)  
+- **Server**: [`https://tumbloom.store/`](https://tumbloom.store)  
 - **Client**: [``]()  
 
 ---
