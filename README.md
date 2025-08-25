@@ -5,8 +5,7 @@
 
 # 🌱 Tumblerin
 
-![Uploading KakaoTalk_Photo_2025-08-25-19-58-33.png…]()
-
+<img width="5760" height="3240" alt="KakaoTalk_Photo_2025-08-25-19-58-33" src="https://github.com/user-attachments/assets/b184760a-764a-4b0b-b512-d6ce3d2cd9b9" />
 
 ## 🚀 Project Introduction
 > **Tumblerin (텀블러인)**  
