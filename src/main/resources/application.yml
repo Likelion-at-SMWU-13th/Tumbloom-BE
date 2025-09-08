@@ -10,17 +10,18 @@ spring:
     url: ${DB_JDBC_URL}
     username: ${DB_USER}
     password: ${DB_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.postgresql.Driver #PostgreSQL DRIVER로 수정
   jpa:
     show-sql: false
-    database: mysql
+    database: postgresql #PostgreSQL
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
+        globally_quoted_identifiers: true
         format_sql: false
         use_sql_comments: false
-      dialect: org.hibernate.spatial.dialect.mysql.MySQL8SpatialDialect
+      dialect: org.hibernate.dialect.PostgreSQLDialect #PostgreSQL
     open-in-view: false
 
 server:
