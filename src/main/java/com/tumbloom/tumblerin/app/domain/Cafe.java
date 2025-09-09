@@ -31,7 +31,7 @@ public class Cafe {
 
     private String businessHours;
 
-    @Column(columnDefinition = "POINT SRID 4326", nullable=false) // 위경도
+    @Column(columnDefinition = "geography(Point,4326)", nullable = false)// 위경도
     private Point location;
 
     @Column(nullable = false, unique = true)
@@ -46,7 +46,7 @@ public class Cafe {
     @OneToMany(mappedBy = "cafe", cascade = CascadeType.ALL)
     List<Menu> menuList =  new ArrayList<>();
 
-    @Column(columnDefinition = "JSON")
+    @Column(columnDefinition = "jsonb")
     private String embedding;
 
     @Column(length = 1000)
