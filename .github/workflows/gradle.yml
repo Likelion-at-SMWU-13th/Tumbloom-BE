@@ -62,6 +62,7 @@ jobs:
       run: |
           sudo docker run -d --name spring-cicd-test \
             --restart always \
+            --env-file /home/ubuntu/project/Tumbloom-BE/.env \ 
             -p 8080:8080 \
             ${{ secrets.DOCKERHUB_USERNAME }}/spring-cicd-test:latest
 
