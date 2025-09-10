@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final UserService userService;
-    private final RefreshTokenRepository refreshTokenRepository;
-    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/signup")
     @Operation(summary = "회원가입", description = "신규 사용자를 등록합니다.\n\n"
@@ -47,9 +47,9 @@ public class AuthController {
             @ApiResponse(responseCode = "401", description = "인증 실패 (잘못된 비밀번호 및 이메일)"),
             @ApiResponse(responseCode = "404", description = "사용자를 찾을 수 없음")
     })
-    public ResponseEntity<ApiResponseTemplate<TokenResponseDTO>> login(@RequestBody LoginRequestDTO request) {
-        TokenResponseDTO response = userService.login(request);
-        return ApiResponseTemplate.success(SuccessCode.LOGIN_SUCCESSFUL, response);
+    public ResponseEntity<ApiResponseTemplate<TokenResponseDTO>> login(@RequestBody LoginRequestDTO request,  HttpServletResponse response) {
+        TokenResponseDTO tokenResponse = userService.login(request, response);
+        return ApiResponseTemplate.success(SuccessCode.LOGIN_SUCCESSFUL, tokenResponse);
     }
 
     @PostMapping("/logout")
@@ -59,8 +59,10 @@ public class AuthController {
             @ApiResponse(responseCode = "401", description = "Refresh Token 불일치 / 만료 / 위조"),
             @ApiResponse(responseCode = "404", description = "저장된 Refresh Token을 찾을 수 없음")
     })
-    public ResponseEntity<ApiResponseTemplate<Void>> logout(@Valid @RequestBody RefreshRequestDTO request) {
-        userService.logout(request.getRefreshToken());
+    public ResponseEntity<ApiResponseTemplate<Void>> logout(
+            HttpServletRequest request,
+            HttpServletResponse response) {
+        userService.logout(request, response); // 쿠키에서 refreshToken 읽고 삭제
         return ApiResponseTemplate.success(SuccessCode.LOGOUT_SUCCESSFUL, null);
     }
 
@@ -71,9 +73,9 @@ public class AuthController {
             @ApiResponse(responseCode = "401", description = "Refresh Token 불일치 / 만료 / 위조"),
             @ApiResponse(responseCode = "404", description = "저장된 Refresh Token을 찾을 수 없음")
     })
-    public ResponseEntity<ApiResponseTemplate<TokenResponseDTO>> refresh(@RequestBody RefreshRequestDTO request) {
-        TokenResponseDTO response = userService.refresh(request.getRefreshToken());
-        return ApiResponseTemplate.success(SuccessCode.TOKEN_REFRESHED, response);
+    public ResponseEntity<ApiResponseTemplate<TokenResponseDTO>> refresh(HttpServletRequest request) {
+        TokenResponseDTO tokenResponse = userService.refresh(request); // 쿠키에서 refreshToken 읽음
+        return ApiResponseTemplate.success(SuccessCode.TOKEN_REFRESHED, tokenResponse);
     }
 
 }

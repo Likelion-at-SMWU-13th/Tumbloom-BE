@@ -12,7 +12,4 @@ public class TokenResponseDTO {
     @Schema(description = "Access Token", example = "eyJhbGciOiJIUzI1NiIsInR...")
     private String accessToken;
 
-    @Schema(description = "Refresh Token", example = "eyJhbGciOiJIUzI1NiIsInR5c...")
-    private String refreshToken;
-
 }
