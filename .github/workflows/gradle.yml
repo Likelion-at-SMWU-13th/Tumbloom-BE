@@ -54,14 +54,19 @@ jobs:
     - name: docker pull
       run : sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/spring-cicd-test
 
-    - name: docker stop container
+    - name: Stop & remove old container (if any)
       run: |
-        if [ $(sudo docker ps -a -q -f name=spring-cicd-test) ]; then
-          sudo docker stop spring-cicd-test
-        fi
+        sudo docker rm -f spring-cicd-test || true
 
-    - name: docker run new container
-      run: sudo docker run --rm -it -d -p 80:8080 --name spring-cicd-test ${{ secrets.DOCKERHUB_USERNAME }}/spring-cicd-test
+    - name: Run new container on 8080 (behind Nginx)
+      run: |
+          sudo docker run -d --name spring-cicd-test \
+            --restart always \
+            -p 8080:8080 \
+            ${{ secrets.DOCKERHUB_USERNAME }}/spring-cicd-test:latest
 
-    - name: delete old docker image
-      run: sudo docker system prune -f
+
+    - name: delete old docker images/caches
+      run: |
+          sudo docker system prune -af || true
+          sudo docker builder prune -af || true
