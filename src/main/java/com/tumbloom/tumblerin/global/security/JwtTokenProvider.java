@@ -10,10 +10,13 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Component;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.security.Key;
 import java.util.Date;
@@ -32,8 +35,9 @@ public class JwtTokenProvider {
 
     // access token 유효기간: 60분으로 수정
     private final long accessTokenValidTime = 1000L * 60 * 60;
-    // refresh token 발급: 30일
-    private final long refreshTokenValidTime = 1000L * 60 * 60 * 24 * 30;
+    // refresh token 발급: 15일 정도
+    private final long refreshTokenValidTime = 1000L * 60 * 60 * 24 * 15;
+
 
 
     @PostConstruct
@@ -110,6 +114,28 @@ public class JwtTokenProvider {
             log.info("Refresh JWT 토큰이 비어있습니다.", e);
             throw new BusinessException(ErrorCode.UNAUTHORIZED_EXCEPTION, "Refresh JWT 토큰이 비어있습니다.");
         }
+    }
+
+    public void addRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+                .httpOnly(true)
+                .secure(false)// 프론트 배포시 HTTPS 환경에서만 전송
+                .path("/")
+                .maxAge(refreshTokenValidTime / 1000)
+                .sameSite("Strict")          // CSRF 방어
+                .build();
+        response.addHeader("Set-Cookie", cookie.toString());
+    }
+
+    public void removeRefreshTokenCookie(HttpServletResponse response) {
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", "")
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(0) //즉시 만료
+                .sameSite("Strict")
+                .build();
+        response.addHeader("Set-Cookie", cookie.toString());
     }
 
 }
