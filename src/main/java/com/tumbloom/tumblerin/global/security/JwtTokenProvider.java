@@ -34,9 +34,9 @@ public class JwtTokenProvider {
     private Key key;
 
     // access token 유효기간: 60분으로 수정
-    private final long accessTokenValidTime = 1000L * 60 * 60;
+    private final long accessTokenValidTime = 1000L * 60 * 3;
     // refresh token 발급: 15일 정도
-    private final long refreshTokenValidTime = 1000L * 60 * 60 * 24 * 15;
+    private final long refreshTokenValidTime = 1000L * 60 * 3; //60 * 24 * 15;
 
 
 
@@ -88,7 +88,7 @@ public class JwtTokenProvider {
             throw new BusinessException(ErrorCode.UNAUTHORIZED_EXCEPTION, "잘못된 JWT 토큰입니다.");
         } catch (io.jsonwebtoken.ExpiredJwtException e) {
             log.info("만료된 JWT 토큰입니다.", e);
-            throw new BusinessException(ErrorCode.UNAUTHORIZED_EXCEPTION, "만료된 JWT 토큰입니다.");
+            throw new BusinessException(ErrorCode.ACCESS_TOKEN_EXPIRED, "ACCESS_TOKEN_EXPIRED");
         } catch (io.jsonwebtoken.UnsupportedJwtException e) {
             log.info("지원하지 않는 JWT 토큰입니다.", e);
             throw new BusinessException(ErrorCode.UNAUTHORIZED_EXCEPTION, "지원하지 않는 JWT 토큰입니다.");
@@ -106,7 +106,7 @@ public class JwtTokenProvider {
             throw new BusinessException(ErrorCode.UNAUTHORIZED_EXCEPTION, "잘못된 Refresh JWT 토큰입니다.");
         } catch (io.jsonwebtoken.ExpiredJwtException e) {
             log.info("만료된 Refresh JWT 토큰입니다.", e);
-            throw new BusinessException(ErrorCode.UNAUTHORIZED_EXCEPTION, "만료된 Refresh JWT 토큰입니다.");
+            throw new BusinessException(ErrorCode.REFRESH_TOKEN_EXPIRED, "REFRESH_TOKEN_EXPIRED");
         } catch (io.jsonwebtoken.UnsupportedJwtException e) {
             log.info("지원하지 않는 Refresh JWT 토큰입니다.", e);
             throw new BusinessException(ErrorCode.UNAUTHORIZED_EXCEPTION, "지원하지 않는 Refresh JWT 토큰입니다.");
