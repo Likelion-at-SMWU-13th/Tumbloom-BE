@@ -119,10 +119,10 @@ public class JwtTokenProvider {
     public void addRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
                 .httpOnly(true)
-                .secure(false)// 프론트 배포시 HTTPS 환경에서만 전송
+                .secure(true)//HTTPS 환경에서만 전송 (백엔드 배포 테스트 시 Lax로 변경 후 테스트, 단 프론트의 경우 도메인이 달라 Lax로 해결이 되지 않음)
                 .path("/")
                 .maxAge(refreshTokenValidTime / 1000)
-                .sameSite("Strict")          // CSRF 방어
+                .sameSite("None") //cross-site 허용
                 .build();
         response.addHeader("Set-Cookie", cookie.toString());
     }
@@ -130,10 +130,10 @@ public class JwtTokenProvider {
     public void removeRefreshTokenCookie(HttpServletResponse response) {
         ResponseCookie cookie = ResponseCookie.from("refreshToken", "")
                 .httpOnly(true)
-                .secure(true)
+                .secure(true) // HTTPS 환경에서만 전송
                 .path("/")
                 .maxAge(0) //즉시 만료
-                .sameSite("Strict")
+                .sameSite("None") //cross-site 허용
                 .build();
         response.addHeader("Set-Cookie", cookie.toString());
     }
