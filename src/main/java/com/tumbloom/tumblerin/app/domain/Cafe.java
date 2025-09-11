@@ -2,6 +2,8 @@ package com.tumbloom.tumblerin.app.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.locationtech.jts.geom.Point;
 
 import java.util.ArrayList;
@@ -46,6 +48,7 @@ public class Cafe {
     @OneToMany(mappedBy = "cafe", cascade = CascadeType.ALL)
     List<Menu> menuList =  new ArrayList<>();
 
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private String embedding;
 
