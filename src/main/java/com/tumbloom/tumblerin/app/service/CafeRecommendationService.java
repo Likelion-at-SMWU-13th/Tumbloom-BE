@@ -9,12 +9,15 @@ import com.tumbloom.tumblerin.app.repository.FavoriteRepository;
 import com.tumbloom.tumblerin.app.repository.UserPreferenceRepository;
 import com.tumbloom.tumblerin.global.dto.ErrorCode;
 import com.tumbloom.tumblerin.global.exception.BusinessException;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -26,6 +29,23 @@ public class CafeRecommendationService {
     private final UserPreferenceRepository upRepository;
     private final OpenAIEmbeddingService embeddingService;
     private final FavoriteRepository favoriteRepository;
+
+    //캐시 맵 적용
+    private final Map<Long, float[]> cafeEmbeddingCache = new ConcurrentHashMap<>();
+
+    // 최초 혹은 변경 시 캐시 초기화
+    @PostConstruct
+    public void initCache() {
+        List<Cafe> cafes = cafeRepository.findAll();
+        for (Cafe cafe : cafes) {
+            if (cafe.getEmbedding() != null) {
+                List<Double> vecList = embeddingService.jsonToVector(cafe.getEmbedding());
+                float[] vector = new float[vecList.size()];
+                for (int i = 0; i < vecList.size(); i++) vector[i] = vecList.get(i).floatValue();
+                cafeEmbeddingCache.put(cafe.getId(), vector);
+            }
+        }
+    }
 
     public List<CafeRecommendDTO> recommendCafesForUser(Long userId) {
 
@@ -59,7 +79,7 @@ public class CafeRecommendationService {
         // 4. 코사인 유사도 계산
         return cafes.stream()
                 .map(cafe -> {
-                    List<Double> cafeEmbedding = embeddingService.jsonToVector(cafe.getEmbedding());
+                    float[] cafeEmbedding = cafeEmbeddingCache.get(cafe.getId());
                     double similarity = cosineSimilarity(userEmbedding, cafeEmbedding);
                     boolean isFavorite = favoriteCafeIds.contains(cafe.getId());
 
@@ -82,8 +102,32 @@ public class CafeRecommendationService {
         return dot / (Math.sqrt(norm1) * Math.sqrt(norm2));
     }
 
+    private double cosineSimilarity(List<Double> v1, float[] v2) {
+        double dot = 0.0;
+        double norm1 = 0.0;
+        double norm2 = 0.0;
+        for (int i = 0; i < v2.length; i++) {
+            double val1 = v1.get(i);
+            dot += val1 * v2[i];
+            norm1 += val1 * val1;
+            norm2 += v2[i] * v2[i];
+        }
+        return dot / (Math.sqrt(norm1) * Math.sqrt(norm2));
+    }
+
     private <T extends Enum<T>> List<String> convertEnumToStringList(Collection<T> enumCollection) {
         return enumCollection.stream().map(Enum::name).collect(Collectors.toList());
     }
+
+    // 카페 생성 시 캐시 갱신
+    public void updateCacheForNewCafe(Cafe cafe) {
+        if (cafe.getEmbedding() != null) {
+            List<Double> vecList = embeddingService.jsonToVector(cafe.getEmbedding());
+            float[] vector = new float[vecList.size()];
+            for (int i = 0; i < vecList.size(); i++) vector[i] = vecList.get(i).floatValue();
+            cafeEmbeddingCache.put(cafe.getId(), vector);
+        }
+    }
+
 
 }

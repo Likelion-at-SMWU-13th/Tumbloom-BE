@@ -21,7 +21,7 @@ spring:
         globally_quoted_identifiers: true
         format_sql: false
         use_sql_comments: false
-      dialect: org.hibernate.spatial.dialect.postgis.PostgisPG10Dialect #PostgreSQL
+        dialect: org.hibernate.spatial.dialect.postgis.PostgisPG10Dialect #PostgreSQL
     open-in-view: false
 
 server:

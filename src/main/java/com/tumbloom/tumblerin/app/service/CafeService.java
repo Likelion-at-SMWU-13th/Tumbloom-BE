@@ -30,6 +30,7 @@ public class CafeService {
     private final FavoriteRepository favoriteRepository;
     private final MenuRepository menuRepository;
     private final OpenAIEmbeddingService embeddingService;
+    private final CafeRecommendationService cafeRecommendationService;
     private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
     private static final double RADIUS_METERS = 3000.0;
@@ -88,6 +89,9 @@ public class CafeService {
                         .build()
         );
 
+        cafeRecommendationService.updateCacheForNewCafe(saved);
+
+
         return saved;
     }
 
@@ -131,6 +135,7 @@ public class CafeService {
                 }
             }
 
+
             cafeList.add(cafe);
         }
 
@@ -145,10 +150,14 @@ public class CafeService {
                             .couponQuantity(20)
                             .build()
             );
+
+            cafeRecommendationService.updateCacheForNewCafe(saved);
         }
+
 
         return savedList;
     }
+
 
     // 카페 아이디로 카페 상세 정보 불러오기
     @Transactional(readOnly = true)
