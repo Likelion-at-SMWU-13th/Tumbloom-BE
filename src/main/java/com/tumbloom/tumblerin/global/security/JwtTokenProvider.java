@@ -36,7 +36,7 @@ public class JwtTokenProvider {
     // access token 유효기간: 60분으로 수정
     private final long accessTokenValidTime = 1000L * 60 * 3;
     // refresh token 발급: 15일 정도
-    private final long refreshTokenValidTime = 1000L * 60 * 3; //60 * 24 * 15;
+    private final long refreshTokenValidTime = 1000L * 60 * 30; //60 * 24 * 15;
 
 
 
