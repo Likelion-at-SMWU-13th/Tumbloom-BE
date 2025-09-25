@@ -59,9 +59,9 @@
 
 | 이름     | 개발분야  | 개인 레포                                         | 역할                    |
 | -------- | --------- | ------------------------------------------------- | ------------------------- |
-| 🦁이현정 | Back-end | [hyhy-j](https://github.com/hyhy-j)  | 내 주변 Cafe  탐색, 필터 조회 및 키워드 검색 / 즐겨찾기 생성 및 제거 |
-| 🦁서문지 | Back-end | [SEOMUNJI](https://github.com/SEOMUNJI)  | QR 인증, 쿠폰 시스템 구현 (쿠폰 발급 및 관리) |
-| 🦁홍상희 | Back-end | [SangHee-Hong](https://github.com/SangHee-Hong)  | 유저 인증 시스템, AI 카페 추천, 마이페이지, AWS 배포  |
+| 🦁이현정 | Back-end | [hyhy-j](https://github.com/hyhy-j)  | 내 주변 Cafe  탐색, 필터 조회 및 키워드 검색 / 즐겨찾기 생성 및 제거, CICD (Docker-github action) |
+| 🦁서문지 | Back-end | [SEOMUNJI](https://github.com/SEOMUNJI)  | QR 인증, 쿠폰 시스템 구현 (쿠폰 발급 및 관리), CICD (Docker-github action) |
+| 🦁홍상희 | Back-end | [SangHee-Hong](https://github.com/SangHee-Hong)  | 유저 인증 시스템, AI 카페 추천, 마이페이지, AWS 배포, CICD (Docker-github action) |
 
 <br/>
 
